@@ -20,10 +20,10 @@ The project follows a modular organization that separates version-controlled sou
 ```text
 Sobel_Filter_Zynq7000/
 │
-├── docs/                          # Detailed implementation guides
-│   ├── tutorial_axi_sobel_p1.md   # Main tutorial (Parts 0–4)
-│   ├── tutorial_axi_sobel_p2.md   # Addendum 1: HDMI output using AXI VDMA
-│   └── tutorial_axi_sobel_p3.md   # Addendum 2: BRAM, Interrupts, RGB and Benchmark
+├── docs/                             # Detailed implementation guides
+│   ├── tutorial_sobel_filter_p1.md   # Main tutorial (Parts 0–4)
+│   ├── tutorial_sobel_filter_p2.md   # Addendum 1: HDMI output using AXI VDMA
+│   └── tutorial_sobel_filter_p3.md   # Addendum 2: BRAM, Interrupts, RGB and Benchmark
 │
 ├── hls/                       # Vitis HLS
 │   ├── src/                   # C/C++ source files
@@ -59,9 +59,9 @@ The implementation is divided into three documents. Reading them in order is rec
 
 | Part | Document | Main Topics | Difficulty |
 |:---:|----------|-------------|:---------:|
-| 1 | `main_tutorial.md` | Vitis HLS, Sobel IP, AXI4-Stream, AXI DMA, Vivado, Vitis | ★★★☆☆ |
-| 2 | `addendum1.md` | AXI VDMA, Video Timing Controller (VTC), HDMI Output | ★★☆☆☆ |
-| 3 | `addendum2.md` | BRAM, Interrupts, RGB Image Processing, Benchmarking | ★★★★☆ |
+| 1 | `tutorial_sobel_filter_p1.md` | Vitis HLS, Sobel IP, AXI4-Stream, AXI DMA, Vivado, Vitis | ★★★☆☆ |
+| 2 | `tutorial_sobel_filter_p2.md` | AXI VDMA, Video Timing Controller (VTC), HDMI Output | ★★☆☆☆ |
+| 3 | `tutorial_sobel_filter_p3.md` | BRAM, Interrupts, RGB Image Processing, Benchmarking | ★★★★☆ |
 
 ---
 
