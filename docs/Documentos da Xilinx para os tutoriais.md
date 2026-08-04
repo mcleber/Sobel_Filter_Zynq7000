@@ -1,0 +1,17 @@
+### Documentos da Xilinx/AMD para os nossos tutoriais
+
+A lista abaixo está em ordem de prioridade, mapeada ao que construímos (busque pelo código do documento — ex.: "PG021 site:docs.amd.com"):
+
+| Doc                | Título                                             | Cobre o quê dos tutoriais                                                                                                                                                   |
+| ------------------ | -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **PG021**          | AXI DMA Product Guide                              | O coração do Tutorial 1: registradores do DMA, Simple vs SG, o Buffer Length Register, os bits de status que usamos no troubleshooting                                      |
+| **UG585**          | Zynq-7000 Technical Reference Manual               | A "bíblia" do chip: portas GP/HP, controlador DDR, GIC (interrupções do B.2), cache. Não se lê inteiro — se consulta. Cap. 5 (interconnect) e 22 (DMA/portas) são os nossos |
+| **UG1399**         | Vitis HLS User Guide                               | Pragmas (`INTERFACE`, `PIPELINE`, `ARRAY_PARTITION`), `hls::stream`, `ap_axiu`, ponto fixo — tudo do IP Sobel e do B.3                                                      |
+| **UG994**          | IP Integrator (Block Designs)                      | Address Editor, Connection Automation, Module Reference (como colocamos seu `dvi_transmitter_top` no diagrama)                                                              |
+| **IHI 0022** (ARM) | Especificação AMBA AXI                             | A fonte primária do protocolo: canais, handshake VALID/READY, bursts. Leia o capítulo introdutório — de repente os diagramas de onda do ILA fazem sentido                   |
+| **PG020**          | AXI VDMA Product Guide                             | Adendo 1: modo circular, stride, frame buffers, genlock                                                                                                                     |
+| **PG044 / PG016**  | AXI4-Stream to Video Out / Video Timing Controller | Adendo 1: os dois IPs que substituíram seu `video_driver`, incluindo o modo Master e o `vtg_ce`                                                                             |
+| **UG934**          | AXI4-Stream Video IP Protocol                      | Curtinho e valioso: explica TUSER=start-of-frame e TLAST=end-of-line, a convenção de vídeo que o VDMA usa                                                                   |
+| **UG908**          | Programming and Debugging                          | O ILA — a ferramenta que citei para enxergar TVALID/TREADY/TLAST ao vivo. Vale ler *antes* de precisar                                                                      |
+
+**Como usar sem afogar:** esses documentos somam milhares de páginas — ninguém lê linearmente. O método é: rode o tutorial → algo intriga ou quebra → abre o doc certo na seção certa. Duas exceções que valem leitura corrida do início ao fim: o **capítulo introdutório da spec AXI** (~30 páginas que consolidam tudo da Parte 0 do tutorial) e o **UG934** (~20 páginas). E um complemento não-oficial excelente: os tutoriais em vídeo/blog da série "Zynq" do Adam Taylor (MicroZed Chronicles) — ele cobre exatamente DMA, VDMA e HLS com a mesma progressão que montamos.

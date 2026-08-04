@@ -1,0 +1,55 @@
+# ===============================
+# Default behavior
+# ===============================
+
+# Automatically detect text files and normalize them to LF in the repository.
+* text=auto eol=lf
+
+# ===============================
+# Git files
+# ===============================
+
+.gitattributes  text
+.gitignore      text
+.editorconfig   text
+
+# ===============================
+# Documentation
+# ===============================
+
+*.md            text
+*.txt           text
+
+# ===============================
+# C / C++
+# ===============================
+
+*.c             text
+*.h             text
+
+# ===============================
+# Python
+# ===============================
+
+*.py            text
+
+# ===============================
+# Verilog / SystemVerilog
+# ===============================
+
+*.v             text
+*.vh            text
+
+# ===============================
+# Build systems
+# ===============================
+
+Makefile        text
+*.mk            text
+
+# ===============================
+# Images
+# ===============================
+
+*.png           binary
+
