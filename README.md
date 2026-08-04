@@ -9,6 +9,10 @@
 ![HDL](https://img.shields.io/badge/HDL-Verilog-orange)
 ![License](https://img.shields.io/badge/License-GPL--3.0-darkgray)
 
+---
+
+## Overview
+
 This repository contains the implementation of a hardware-accelerated image processing system for the **Xilinx Zynq-7000** architecture (ARM Cortex-A9 + FPGA). The application executes the **Sobel Edge Detection Filter** as a streaming hardware accelerator in the Programmable Logic (PL), communicating with the Processing System (PS) DDR memory through **AXI DMA** using **AXI4-Lite**, **AXI4-Full**, and **AXI4-Stream** interfaces. The project also includes support for displaying the processed image in real time through an **HDMI** output.
 
 ---
@@ -73,12 +77,17 @@ The following tools are used throughout the project.
 |------|:-------:|-------------|
 | Vivado | 2025.2.1 | FPGA hardware design, synthesis, implementation, and bitstream generation. |
 | Vitis | 2025.2.1 | Bare-metal software development for the ARM Cortex-A9 Processing System. |
+| Python | 3.12.3 | For tools and automation. |
+
 
 ---
 
 ## Reference Documentation (AMD/Xilinx)
 
 The following official AMD/Xilinx documentation is recommended throughout the implementation.
+
+> Search using the document code — e.g., `"PG021 site:docs.amd.com"`.
+
 
 | Document | Title | Main Topics |
 |----------|-------|-------------|
@@ -87,6 +96,8 @@ The following official AMD/Xilinx documentation is recommended throughout the im
 | UG1399 | Vitis HLS User Guide | C/C++ coding style, HLS pragmas (`INTERFACE`, `PIPELINE`, `ARRAY_PARTITION`), optimization techniques and `hls::stream`. |
 | UG994 | Vivado Design Suite User Guide: Designing IP Subsystems | IP Integrator, Address Editor, Block Design creation and TCL export. |
 | UG908 | Vivado Design Suite User Guide: Programming and Debugging | FPGA programming, debugging and Integrated Logic Analyzer (ILA). |
+
+**How to use these documents without getting overwhelmed:** Together, these manuals span thousands of pages, and no one is expected to read them cover to cover. The recommended approach is: follow the tutorial → if something is unclear or breaks, open the relevant document and jump directly to the appropriate section. There are two exceptions that are well worth reading from beginning to end: the **introductory chapter of the AXI specification** (about 30 pages, which consolidates the concepts covered in Part 0 of this tutorial) and **UG934** (about 20 pages).
 
 ---
 
@@ -106,22 +117,6 @@ Keep the repository lightweight by versioning only:
 - Documentation
 
 Generated directories such as `proj/` and `workspace/` should remain outside version control.
-
-### Directory Naming
-
-Avoid directory names containing:
-
-- Spaces
-- Accented characters
-- Special symbols
-
-Prefer simple names such as:
-
-- `src/`
-- `docs/`
-- `hw/`
-- `sw/`
-- `images/`
 
 ---
 
