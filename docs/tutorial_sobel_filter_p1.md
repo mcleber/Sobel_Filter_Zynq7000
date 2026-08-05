@@ -9,7 +9,7 @@
 
 # Part 1 — Sobel Edge Detection Filter
 
-#### Zynq (PS + PL) Using AXI DMA
+**Zynq (PS + PL) Using AXI DMA**
 
 **Project flow:** the application running on the ARM processor (via Vitis) sends a grayscale image from DDR memory to the FPGA through an **AXI DMA**. The FPGA applies the **Sobel filter** (an IP created with HLS) and writes the processed image back to DDR memory, where it can be saved and viewed on the PC.
 
@@ -23,30 +23,28 @@
 
 AXI (Advanced eXtensible Interface) is the "language" that the ARM processor (PS) and the FPGA logic (PL) use to communicate. There are **three dialects**:
 
-### AXI4-Lite — "Control Panel"
+**AXI4-Lite — "Control Panel"**
 
 * Simple transfers: **one 32-bit word at a time**, with no burst transfers.
 * Typical use: **configuration and status registers**. Enable/disable an IP, write a parameter, read a "ready" flag.
 * In this project: this is how the ARM configures the AXI DMA ("start transferring from address X with size Y").
 * Analogy: a **light switch** — it does not carry power; it only controls it.
 
-### AXI4 (Full / Memory-Mapped) — "Addressed Cargo Truck"
+**AXI4 (Full / Memory-Mapped) — "Addressed Cargo Truck"**
 
 * Supports **burst transfers of up to 256 words** per address transaction.
 * Typical use: high-bandwidth access to **DDR memory**.
 * In this project: this is how the DMA reads from and writes to DDR memory through the Zynq **HP (High Performance)** ports.
 * Analogy: a **moving truck** — it carries a large amount of data to a specific address.
 
-### AXI4-Stream — "Conveyor Belt"
+**AXI4-Stream — "Conveyor Belt"**
 
 * **No addresses!** It is simply a continuous stream of data: `TDATA` + `TVALID`/`TREADY` (handshake) + `TLAST` (marks the end of a packet).
 * Typical use: streaming data such as pixels, audio samples or DSP signals.
 * In this project: this is how pixels enter and leave the Sobel filter.
 * Analogy: a **sushi conveyor belt** — dishes arrive in sequence; you do not request "the dish at address 0x40."
 
----
-
-### 1.2 Essential Handshake Signals (Applies to All Three)
+## 1.2 Essential Handshake Signals (Applies to All Three)
 
 Every AXI transfer occurs when, **during the same clock cycle**:
 
