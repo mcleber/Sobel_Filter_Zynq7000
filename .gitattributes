@@ -17,35 +17,35 @@
 # Documentation
 # ===============================
 
-*.md            text
-*.txt           text
+*.md            text eol=lf
+*.txt           text eol=lf
 
 # ===============================
 # C / C++
 # ===============================
 
-*.c             text
-*.h             text
+*.c             text eol=lf
+*.h             text eol=lf
 
 # ===============================
 # Python
 # ===============================
 
-*.py            text
+*.py            text eol=lf
 
 # ===============================
 # Verilog / SystemVerilog
 # ===============================
 
-*.v             text
-*.vh            text
+*.v             text eol=lf
+*.vh            text eol=lf
 
 # ===============================
 # Build systems
 # ===============================
 
-Makefile        text
-*.mk            text
+Makefile        text eol=lf
+*.mk            text eol=lf
 
 # ===============================
 # Images
