@@ -1,4 +1,4 @@
-# Adendo ao Tutorial Sobel: Exibindo Antes/Depois via HDMI
+# Adendo ao Tutorial Sobel: Exibindo Antes/Depois via HDMI HDMI output using AXI VDMA
 
 **Objetivo:** substituir o gerador de colorbar por um **framebuffer na DDR**, exibindo no monitor HDMI a imagem original (metade esquerda) e a filtrada pelo Sobel (metade direita), lado a lado, em 1024×600.
 

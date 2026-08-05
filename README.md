@@ -61,11 +61,11 @@ Sobel_Filter_Zynq7000/
 
 The implementation is divided into three documents. Reading them in order is recommended.
 
-| Part | Document | Main Topics | Difficulty |
-|:---:|----------|-------------|:---------:|
-| 1 | `tutorial_sobel_filter_p1.md` | Vitis HLS, Sobel IP, AXI4-Stream, AXI DMA, Vivado, Vitis | ★★★☆☆ |
-| 2 | `tutorial_sobel_filter_p2.md` | AXI VDMA, Video Timing Controller (VTC), HDMI Output | ★★☆☆☆ |
-| 3 | `tutorial_sobel_filter_p3.md` | BRAM, Interrupts, RGB Image Processing, Benchmarking | ★★★★☆ |
+| Part | Document | Main Topics |
+|:---:|----------|-------------|
+| 1 | [tutorial_sobel_filter_p1.md](docs/tutorial_sobel_filter_p1.md) | Vitis HLS, Sobel IP, AXI4-Stream, AXI DMA, Vivado, Vitis |
+| 2 | [tutorial_sobel_filter_p2.md](docs/tutorial_sobel_filter_p2.md) | AXI VDMA, Video Timing Controller (VTC), HDMI Output |
+| 3 | [tutorial_sobel_filter_p3.md](docs/tutorial_sobel_filter_p3.md) | BRAM, Interrupts, RGB Image Processing, Benchmarking |
 
 ---
 
@@ -78,7 +78,7 @@ The following tools are used throughout the project.
 | Vivado | 2025.2.1 | FPGA hardware design, synthesis, implementation, and bitstream generation. |
 | Vitis | 2025.2.1 | Bare-metal software development for the ARM Cortex-A9 Processing System. |
 | Python | 3.12.3 | For tools and automation. |
-
+| Board | PYNQ-Z2 | Real implementation. |
 
 ---
 
