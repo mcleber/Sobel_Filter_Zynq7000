@@ -9,7 +9,7 @@
 
 # Part 1 — Sobel Edge Detection Filter
 
-**Zynq (PS + PL) Using AXI DMA**
+## 1. Zynq (PS + PL) Using AXI DMA
 
 **Project flow:** the application running on the ARM processor (via Vitis) sends a grayscale image from DDR memory to the FPGA through an **AXI DMA**. The FPGA applies the **Sobel filter** (an IP created with HLS) and writes the processed image back to DDR memory, where it can be saved and viewed on the PC.
 
@@ -19,7 +19,7 @@
 
 ---
 
-## 1.1 Understanding AXI Once and for All
+### 1.1 Understanding AXI Once and for All
 
 AXI (Advanced eXtensible Interface) is the "language" that the ARM processor (PS) and the FPGA logic (PL) use to communicate. There are **three dialects**:
 
@@ -44,7 +44,9 @@ AXI (Advanced eXtensible Interface) is the "language" that the ARM processor (PS
 * In this project: this is how pixels enter and leave the Sobel filter.
 * Analogy: a **sushi conveyor belt** — dishes arrive in sequence; you do not request "the dish at address 0x40."
 
-## 1.2 Essential Handshake Signals (Applies to All Three)
+---
+
+### 1.2 Essential Handshake Signals (Applies to All Three)
 
 Every AXI transfer occurs when, **during the same clock cycle**:
 
