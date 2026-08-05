@@ -17,8 +17,6 @@
 
 **Tools:** Vivado + Vitis HLS + Vitis (2025.2.1 or newer — menu names may vary slightly).
 
----
-
 ### 1.1 Understanding AXI Once and for All
 
 AXI (Advanced eXtensible Interface) is the "language" that the ARM processor (PS) and the FPGA logic (PL) use to communicate. There are **three dialects**:
@@ -102,7 +100,6 @@ DDR Memory ◄──AXI4 Full (MM)── AXI DMA ◄──AXI4-Stream── Sobe
 In this chapter, we will create the Sobel hardware accelerator using Vitis HLS. The accelerator is written in C++ and synthesized into an RTL IP with AXI4-Stream interfaces, making it easy to integrate with AXI DMA in Vivado.
 
 The complete source code is already included in this repository under the hls/src/ directory, so there is no need to type it manually.
-
 
 ### 2.1 Create the Project
 
