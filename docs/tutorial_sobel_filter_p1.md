@@ -17,7 +17,9 @@
 
 **Tools:** Vivado + Vitis HLS + Vitis (2025.2.1 or newer — menu names may vary slightly).
 
-### 1.1 Understanding AXI Once and for All
+---
+
+## 1.1 Understanding AXI Once and for All
 
 AXI (Advanced eXtensible Interface) is the "language" that the ARM processor (PS) and the FPGA logic (PL) use to communicate. There are **three dialects**:
 
@@ -44,7 +46,7 @@ AXI (Advanced eXtensible Interface) is the "language" that the ARM processor (PS
 
 ---
 
-### 1.2 Essential Handshake Signals (Applies to All Three)
+## 1.2 Essential Handshake Signals (Applies to All Three)
 
 Every AXI transfer occurs when, **during the same clock cycle**:
 
@@ -57,7 +59,7 @@ Understanding this concept is already **70% of AXI**. The remaining details invo
 
 ---
 
-### 1.3 The Role of AXI DMA
+## 1.3 The Role of AXI DMA
 
 The ARM processor does **not** send pixels to the PL one at a time—that would be far too slow. The heavy lifting is handled by the **AXI DMA** IP, which converts between memory-mapped and streaming interfaces:
 
@@ -72,7 +74,7 @@ DDR Memory ◄──AXI4 Full (MM)── AXI DMA ◄──AXI4-Stream── Sobe
 
 ---
 
-### 1.4 Complete Project Architecture
+## 1.4 Complete Project Architecture
 
 ```text
 ┌─────────────── PS (ARM) ───────────────┐
@@ -101,7 +103,9 @@ In this chapter, we will create the Sobel hardware accelerator using Vitis HLS. 
 
 The complete source code is already included in this repository under the hls/src/ directory, so there is no need to type it manually.
 
-### 2.1 Create the Project
+---
+
+## 2.1 Create the Project
 
 1. Open Vitis HLS.
 2. Select Create Project.
@@ -112,7 +116,7 @@ The complete source code is already included in this repository under the hls/sr
 
 ---
 
-### 2.2 Add the Source Files
+## 2.2 Add the Source Files
 
 Copy or import the following files from the repository:
 
@@ -132,7 +136,7 @@ automatic generation of the TLAST signal required by AXI DMA.
 
 ---
 
-### 2.3 Add the Testbench
+## 2.3 Add the Testbench
 
 Import the testbench file:
 
@@ -154,7 +158,7 @@ Running the C Simulation before hardware synthesis is highly recommended to vali
 
 ---
 
-### 2.4 Synthesize and Export
+## 2.4 Synthesize and Export
 
 1. **Run C Simulation** → verify the generated `sobel_output.pgm` (it should display only the edges of the square).
 2. **Run C Synthesis** → check the synthesis report to confirm:
@@ -167,7 +171,7 @@ Running the C Simulation before hardware synthesis is highly recommended to vali
 
 ## 3. Creating the Block Design in Vivado
 
-### 3.1 Create the Project
+## 3.1 Create the Project
 
 1. Open **Vivado** → **Create Project** → select **RTL Project**, **without** adding sources.
 2. Select your **target board** (if the board files are installed, e.g., Zybo, PYNQ-Z2, ZedBoard). This automatically configures the correct DDR memory and clock settings. Otherwise, select the FPGA device and configure the Processing System (PS) manually later.
@@ -175,7 +179,7 @@ Running the C Simulation before hardware synthesis is highly recommended to vali
 
 ---
 
-### 3.2 Add the HLS IP to the IP Catalog
+## 3.2 Add the HLS IP to the IP Catalog
 
 1. Go to **Settings → IP → Repository → +**.
 2. Add the directory containing your Vitis HLS project (or the folder where you extracted the exported `.zip` IP package).
@@ -183,7 +187,7 @@ Running the C Simulation before hardware synthesis is highly recommended to vali
 
 ---
 
-### 3.3 Build the Block Design
+## 3.3 Build the Block Design
 
 Add the following IPs in this order:
 
@@ -195,7 +199,7 @@ Add the following IPs in this order:
 
 ---
 
-### 3.4 Configure the Zynq Processing System
+## 3.4 Configure the Zynq Processing System
 
 Double-click the **ZYNQ7 Processing System** block.
 
@@ -215,7 +219,7 @@ Double-click the **ZYNQ7 Processing System** block.
 
 ---
 
-### 3.5 Configure the AXI DMA
+## 3.5 Configure the AXI DMA
 
 Double-click the **AXI Direct Memory Access** block.
 
@@ -249,7 +253,7 @@ This configuration is responsible for most AXI DMA issues, so configure it exact
 
 ---
 
-### 3.6 Connect the Blocks
+## 3.6 Connect the Blocks
 
 Run **Connection Automation**, which creates most of the required connections automatically. Then verify the following connections:
 
@@ -275,7 +279,7 @@ Connection Automation normally performs these connections automatically, but alw
 
 ---
 
-### 3.7 Address Assignment
+## 3.7 Address Assignment
 
 Open the **Address Editor**.
 
@@ -287,7 +291,7 @@ Without access to DDR memory, DMA transfers will never complete.
 
 ---
 
-### 3.8 Generate the Hardware Platform
+## 3.8 Generate the Hardware Platform
 
 1. Run **Validate Design** (`F6`). The design should contain no errors. Warnings related to 8-bit to 32-bit stream width conversion are expected, as the DMA performs this conversion automatically.
 2. In the **Sources** window, right-click `design_1` and select **Create HDL Wrapper** (**Let Vivado manage wrapper and auto-update**).
@@ -300,7 +304,7 @@ The `.xsa` file is a complete description of the hardware platform and will be i
 
 ## 4. Developing the Bare-Metal Application in Vitis
 
-### 4.1 Create the Platform and Application
+## 4.1 Create the Platform and Application
 
 1. Open **Vitis** and create a new workspace.
 2. Select **Create Platform Project**.
@@ -315,7 +319,7 @@ The `.xsa` file is a complete description of the hardware platform and will be i
 
 ---
 
-### 4.2 Add the Application Source Code
+## 4.2 Add the Application Source Code
 
 Replace the generated `helloworld.c` with the `main.c` implementation provided in this repository:
 
@@ -346,7 +350,7 @@ The implementation also demonstrates several best practices for Zynq bare-metal 
 
 ---
 
-### 4.3 Run the Application on the Board
+## 4.3 Run the Application on the Board
 
 1. Connect the board through **JTAG** and **UART**.
 2. Configure the board boot mode for **JTAG**.
@@ -360,7 +364,7 @@ This programs the FPGA with the generated bitstream and downloads the applicatio
 
 ---
 
-### 4.4 View the Processed Image on the Host PC
+## 4.4 View the Processed Image on the Host PC
 
 The simplest approach (without Ethernet, SD card, or additional drivers) is to capture the UART output into a file.
 
