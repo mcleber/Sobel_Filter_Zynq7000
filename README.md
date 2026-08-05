@@ -14,7 +14,9 @@
 
 ## Overview
 
-This repository contains the implementation of a hardware-accelerated image processing system for the **Xilinx Zynq-7000** architecture (ARM Cortex-A9 + FPGA). The application executes the **Sobel Edge Detection Filter** as a streaming hardware accelerator in the Programmable Logic (PL), communicating with the Processing System (PS) DDR memory through **AXI DMA** using **AXI4-Lite**, **AXI4-Full**, and **AXI4-Stream** interfaces. The project also includes support for displaying the processed image in real time through an **HDMI** output.
+This repository contains the implementation of a hardware-accelerated image processing system for the **Xilinx Zynq-7000** architecture (ARM Cortex-A9 + FPGA). 
+
+The application executes the **Sobel Edge Detection Filter** as a streaming hardware accelerator in the Programmable Logic (PL), communicating with the Processing System (PS) DDR memory through **AXI DMA** using **AXI4-Lite**, **AXI4-Full**, and **AXI4-Stream** interfaces. The project also includes support for displaying the processed image in real time through an **HDMI** output.
 
 ---
 
