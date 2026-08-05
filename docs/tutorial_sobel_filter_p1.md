@@ -7,9 +7,9 @@
 
 ---
 
-# 1 — Sobel Edge Detection Filter
+# Part 1 — Sobel Edge Detection Filter
 
-## Zynq (PS + PL) Using AXI DMA
+#### Zynq (PS + PL) Using AXI DMA
 
 **Project flow:** the application running on the ARM processor (via Vitis) sends a grayscale image from DDR memory to the FPGA through an **AXI DMA**. The FPGA applies the **Sobel filter** (an IP created with HLS) and writes the processed image back to DDR memory, where it can be saved and viewed on the PC.
 
@@ -19,31 +19,25 @@
 
 ---
 
-## Chapter 1 — Understanding AXI Once and for All
+## 1.1 Understanding AXI Once and for All
 
-AXI (Advanced eXtensible Interface) is the "language" that the ARM processor (PS) and the FPGA logic (PL) use to communicate. There are **three dialects**.
+AXI (Advanced eXtensible Interface) is the "language" that the ARM processor (PS) and the FPGA logic (PL) use to communicate. There are **three dialects**:
 
----
-
-### 1.1 AXI4-Lite — "Control Panel"
+### AXI4-Lite — "Control Panel"
 
 * Simple transfers: **one 32-bit word at a time**, with no burst transfers.
 * Typical use: **configuration and status registers**. Enable/disable an IP, write a parameter, read a "ready" flag.
 * In this project: this is how the ARM configures the AXI DMA ("start transferring from address X with size Y").
 * Analogy: a **light switch** — it does not carry power; it only controls it.
 
----
-
-### 1.2 AXI4 (Full / Memory-Mapped) — "Addressed Cargo Truck"
+### AXI4 (Full / Memory-Mapped) — "Addressed Cargo Truck"
 
 * Supports **burst transfers of up to 256 words** per address transaction.
 * Typical use: high-bandwidth access to **DDR memory**.
 * In this project: this is how the DMA reads from and writes to DDR memory through the Zynq **HP (High Performance)** ports.
 * Analogy: a **moving truck** — it carries a large amount of data to a specific address.
 
----
-
-### 1.3 AXI4-Stream — "Conveyor Belt"
+### AXI4-Stream — "Conveyor Belt"
 
 * **No addresses!** It is simply a continuous stream of data: `TDATA` + `TVALID`/`TREADY` (handshake) + `TLAST` (marks the end of a packet).
 * Typical use: streaming data such as pixels, audio samples or DSP signals.
@@ -52,7 +46,7 @@ AXI (Advanced eXtensible Interface) is the "language" that the ARM processor (PS
 
 ---
 
-### 1.4 Essential Handshake Signals (Applies to All Three)
+### 1.2 Essential Handshake Signals (Applies to All Three)
 
 Every AXI transfer occurs when, **during the same clock cycle**:
 
@@ -65,7 +59,7 @@ Understanding this concept is already **70% of AXI**. The remaining details invo
 
 ---
 
-### 1.5 The Role of AXI DMA
+### 1.3 The Role of AXI DMA
 
 The ARM processor does **not** send pixels to the PL one at a time—that would be far too slow. The heavy lifting is handled by the **AXI DMA** IP, which converts between memory-mapped and streaming interfaces:
 
@@ -80,7 +74,7 @@ DDR Memory ◄──AXI4 Full (MM)── AXI DMA ◄──AXI4-Stream── Sobe
 
 ---
 
-### 1.6 Complete Project Architecture
+### 1.4 Complete Project Architecture
 
 ```text
 ┌─────────────── PS (ARM) ───────────────┐
@@ -103,13 +97,12 @@ DDR Memory ◄──AXI4 Full (MM)── AXI DMA ◄──AXI4-Stream── Sobe
 
 ---
 
-## 2 — Creating the Sobel IP in Vitis HLS
+## 2. Creating the Sobel IP in Vitis HLS
 
 In this chapter, we will create the Sobel hardware accelerator using Vitis HLS. The accelerator is written in C++ and synthesized into an RTL IP with AXI4-Stream interfaces, making it easy to integrate with AXI DMA in Vivado.
 
 The complete source code is already included in this repository under the hls/src/ directory, so there is no need to type it manually.
 
----
 
 ### 2.1 Create the Project
 
@@ -175,7 +168,7 @@ Running the C Simulation before hardware synthesis is highly recommended to vali
 
 ---
 
-## 3 — Creating the Block Design in Vivado
+## 3. Creating the Block Design in Vivado
 
 ### 3.1 Create the Project
 
@@ -308,7 +301,7 @@ The `.xsa` file is a complete description of the hardware platform and will be i
 
 ---
 
-## 4 — Developing the Bare-Metal Application in Vitis
+## 4. Developing the Bare-Metal Application in Vitis
 
 ### 4.1 Create the Platform and Application
 
@@ -401,7 +394,7 @@ If everything is configured correctly, the resulting image should contain only t
 
 ---
 
-## Troubleshooting: The 7 Most Common Issues
+## 5. Troubleshooting: The 7 Most Common Issues
 
 | Symptom                                                                 | Likely Cause                                                                                   | Solution                                                                                                                                                                      |
 | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -415,7 +408,7 @@ If everything is configured correctly, the resulting image should contain only t
 
 ---
 
-## Debugging Tip
+## 6. Debugging Tip
 
 When the DMA appears to be stuck, read its status registers to identify the problem:
 
@@ -439,7 +432,7 @@ With the ILA, you can observe signals such as `TVALID`, `TREADY`, and `TLAST` in
 
 ---
 
-## AXI Mental Model Recap
+## 7. AXI Mental Model Recap
 
 * **AXI4-Lite** → Control registers (ARM → DMA): *"Configure and start the transfer."*
 * **AXI4 (Memory-Mapped)** → High-bandwidth data transfers between the DMA and DDR memory through the HP interface.
