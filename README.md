@@ -104,7 +104,7 @@ The following official AMD/Xilinx documentation is recommended throughout the im
 
 Together, these manuals span thousands of pages, and no one is expected to read them cover to cover. The recommended approach is: follow the tutorial → if something is unclear or breaks, open the relevant document and jump directly to the appropriate section. 
 
-There are two exceptions that are well worth reading from beginning to end: the **introductory chapter of the AXI specification** (about 30 pages, which consolidates the concepts covered in Part 0 of this tutorial) and **UG934** (about 20 pages).
+There are two exceptions that are well worth reading from beginning to end: the **introductory chapter of the AXI specification UG1037** (about 30 pages, which consolidates the concepts covered in Part 1 of this tutorial) and **UG934** (about 20 pages).
 
 ---
 
