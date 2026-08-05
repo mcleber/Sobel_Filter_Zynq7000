@@ -7,7 +7,7 @@
 
 ---
 
-# Part 1 — Sobel Edge Detection Filter
+# 1 — Sobel Edge Detection Filter
 
 ## Zynq (PS + PL) Using AXI DMA
 
@@ -103,7 +103,7 @@ DDR Memory ◄──AXI4 Full (MM)── AXI DMA ◄──AXI4-Stream── Sobe
 
 ---
 
-## Chapter 2 — Creating the Sobel IP in Vitis HLS
+## 2 — Creating the Sobel IP in Vitis HLS
 
 In this chapter, we will create the Sobel hardware accelerator using Vitis HLS. The accelerator is written in C++ and synthesized into an RTL IP with AXI4-Stream interfaces, making it easy to integrate with AXI DMA in Vivado.
 
@@ -111,7 +111,7 @@ The complete source code is already included in this repository under the hls/sr
 
 ---
 
-## 2.1 Create the Project
+### 2.1 Create the Project
 
 1. Open Vitis HLS.
 2. Select Create Project.
@@ -122,7 +122,7 @@ The complete source code is already included in this repository under the hls/sr
 
 ---
 
-## 2.2 Add the Source Files
+### 2.2 Add the Source Files
 
 Copy or import the following files from the repository:
 
@@ -175,7 +175,7 @@ Running the C Simulation before hardware synthesis is highly recommended to vali
 
 ---
 
-## Chapter 3 — Creating the Block Design in Vivado
+## 3 — Creating the Block Design in Vivado
 
 ### 3.1 Create the Project
 
@@ -272,8 +272,6 @@ Run **Connection Automation**, which creates most of the required connections au
 
 The two AXI4-Stream connections must be created manually by connecting the corresponding ports. The remaining connections are usually generated automatically by **Connection Automation**, including the required **AXI Interconnect (or SmartConnect)** and **Processor System Reset** blocks.
 
----
-
 #### Clock Connections
 
 Connect the PS output clock `FCLK_CLK0` to every clock input in the design:
@@ -310,7 +308,7 @@ The `.xsa` file is a complete description of the hardware platform and will be i
 
 ---
 
-## Chapter 4 — Developing the Bare-Metal Application in Vitis
+## 4 — Developing the Bare-Metal Application in Vitis
 
 ### 4.1 Create the Platform and Application
 
@@ -417,7 +415,7 @@ If everything is configured correctly, the resulting image should contain only t
 
 ---
 
-### Debugging Tip
+## Debugging Tip
 
 When the DMA appears to be stuck, read its status registers to identify the problem:
 
