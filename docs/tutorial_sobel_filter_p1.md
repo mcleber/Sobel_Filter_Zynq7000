@@ -61,7 +61,7 @@ Understanding this concept is already **70% of AXI**. The remaining details invo
 
 ## 1.3 The Role of AXI DMA
 
-The ARM processor does **not** send pixels to the PL one at a time—that would be far too slow. The heavy lifting is handled by the **AXI DMA** IP, which converts between memory-mapped and streaming interfaces:
+The ARM processor does **not** send pixels to the PL one at a time, that would be far too slow. The heavy lifting is handled by the **AXI DMA** IP, which converts between memory-mapped and streaming interfaces:
 
 ```text
 DDR Memory ──AXI4 Full (MM)──► AXI DMA ──AXI4-Stream──► Sobel IP
