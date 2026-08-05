@@ -6,6 +6,7 @@
 ![Board](https://img.shields.io/badge/Board-PYNQ--Z2-green)
 ![EDA](https://img.shields.io/badge/EDA-Vivado%202025.2.1-blue)
 ![IDE](https://img.shields.io/badge/IDE-Vitis-blue)
+![Language](https://img.shields.io/badge/Language-Python-orange)
 ![HDL](https://img.shields.io/badge/HDL-Verilog-orange)
 ![License](https://img.shields.io/badge/License-GPL--3.0-darkgray)
 
