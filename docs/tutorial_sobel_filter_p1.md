@@ -216,14 +216,14 @@ The design has **fixed dimensions** (`WIDTH` x `HEIGHT`, defined in `sobel.hpp`)
    **Example 1 — default synthetic square** (no `argv` set):
 
    <p align="center">
-     <img src="docs/images/sobel_output_square.png" alt="Sobel filter output on synthetic square" width="300"><br>
+     <img src="/images/sobel_output_square.png" alt="Sobel filter output on synthetic square" width="300"><br>
      <em>Sobel filter output — synthetic square testbench (default, no external image required)</em>
    </p>
 
    **Example 2 — custom image via `argv`** (using an external `.pgm`):
 
    <p align="center">
-     <img src="docs/images/sobel_output_landscape.png" alt="Sobel filter output on Pixabay sample image" width="300"><br>
+     <img src="/images/sobel_output_landscape.png" alt="Sobel filter output on Pixabay sample image" width="300"><br>
      <em>Sobel filter output — sample image from <a href="https://pixabay.com/pt/vectors/paisagem-pintada-casa-frango-flores-10246533/">Pixabay</a></em>
    </p>
 
