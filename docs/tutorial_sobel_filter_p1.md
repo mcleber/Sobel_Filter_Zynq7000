@@ -107,12 +107,22 @@ The complete source code is already included in this repository under the hls/sr
 
 ## 2.1 Create the Project
 
-1. Open Vitis HLS.
-2. Select Create Project.
-3. Project name: sobel_hls
-4. Top function: sobel_filter
-5. Select your target FPGA device (for example, xc7z020clg400-1 for the PYNQ-Z2 or Zybo Z7-20).
-6. Set the target clock period to 10 ns (100 MHz).
+1. Open Vitis (Vitis Unified IDE).
+2. On the Welcome page, select/create a **Workspace** — a folder that will hold all the components and projects.
+3. With the Vitis IDE open, go to **File > New Component > HLS** (you can also click "New Component" on the Welcome page, or use the right-click menu in the Explorer).
+4. This opens the **Create HLS Component** wizard, on the **Choose Name and Location** page: enter the **Component name** (e.g., `sobel_hls`) and the **Component location**, then click **Next**.
+5. On the next page (**Configuration File**), choose how to create the component's configuration file:
+   - **Empty File** (new, blank)
+   - **Existing File** (reuse an existing one)
+   - **Generate from Vitis HLS Project** (from an old `hls.app`)
+6. On the following pages you will:
+   - Add the source files (.cpp/.h) and define the **Top Function** (e.g., `sobel_filter`)
+   - Add the **testbench** files (optional, but recommended)
+   - Choose the **Part/Device** (e.g., `xc7z020clg400-1`)
+   - Set the **Clock Period** (e.g., 10 ns) and the **Flow Target** to **Vivado IP Flow** (required to later add the design to the Vivado IP Catalog and use it in a Block Design)
+7. On the **Summary** page, review and click **Finish**.
+
+> **Note:** The Vivado IP Catalog is not part of this wizard. After running C Synthesis and exporting/packaging the RTL (Export RTL / Package step), the generated IP `.zip` package must be added as a repository in Vivado (**Settings > IP > Repository**) before it becomes available in the **IP Catalog** for use in your Block Design.
 
 ---
 
@@ -138,34 +148,89 @@ automatic generation of the TLAST signal required by AXI DMA.
 
 ## 2.3 Add the Testbench
 
-Import the testbench file:
+Import the testbench files:
 
 ```text
 hls/
 └── src/
-    └── sobel_tb.cpp
+    ├── sobel_tb.cpp
+    └── pgm_io.hpp
 ```
 
 The testbench:
-
-generates a synthetic grayscale image;
-feeds the AXI4-Stream interface;
-executes the Sobel accelerator;
-saves the output as a PGM image;
-verifies that the TLAST signal is asserted correctly.
+- generates a synthetic grayscale image (a white square, by default), **or** loads an external `.pgm` image passed as an argument;
+- feeds the AXI4-Stream interface;
+- executes the Sobel accelerator;
+- saves the output as a PGM image;
+- verifies that the TLAST signal is asserted correctly.
 
 Running the C Simulation before hardware synthesis is highly recommended to validate the algorithm and avoid unnecessary synthesis iterations.
+
+### Using Your Own Image
+
+The design has **fixed dimensions** (`WIDTH` x `HEIGHT`, defined in `sobel.hpp`), so any custom image must match that resolution exactly.
+
+1. Convert/resize your image to grayscale PGM (binary, P5) using GIMP: resize to `WIDTH x HEIGHT` first (**Image → Scale Image**), then **File → Export As → `.pgm`**, choosing **Raw** encoding when prompted.
+2. Pass the image path via the `hls.csim.argv` field in the C Simulation dialog (see table above):
+
+```text
+<path to the image> my_image.pgm <path to the image> my_output.pgm
+```
+
+- `argv[1]` → input image path (required to use a custom image).
+- `argv[2]` → output image path (optional, defaults to `my_output.pgm`).
+
+3. **If no argument is passed**, the testbench falls back to the default synthetic square — the image is generated in-code and no `.pgm` file is loaded from disk. This is the built-in sanity check for the design, and does not depend on any external asset.
+4. If the image size doesn't match `WIDTH` x `HEIGHT`, the testbench prints an error and aborts before running the simulation.
 
 ---
 
 ## 2.4 Synthesize and Export
 
-1. **Run C Simulation** → verify the generated `sobel_output.pgm` (it should display only the edges of the square).
-2. **Run C Synthesis** → check the synthesis report to confirm:
+1. Run C Simulation → verify the generated `saida_sobel.pgm` (it should display only the edges of the square, or the edges detected in your custom image).
 
-   * **II (Initiation Interval) = 1** for the main processing loop.
-   * `in_stream` and `out_stream` are implemented as **AXI4-Stream** (`axis`) interfaces.
-3. **Export RTL** (**Solution → Export RTL**) → generates the IP package (`.zip`) that can be imported into the Vivado IP Catalog.
+   > **C Simulation Settings**
+   >
+   > When running **C Simulation** for the first time, the Vitis Unified IDE shows a configuration dialog:
+   >
+   > | Option | Function | Recommendation |
+   > |---|---|---|
+   > | `hls.sim.O` | Compiles with higher optimization (no debug info) | Leave unchecked |
+   > | `hls.csim.clean` | Removes old binaries/object files before recompiling | Check if you edited the code |
+   > | `hls.csim.setup` | Only compiles, does not run the simulation | Leave unchecked |
+   > | `hls.csim.argv` | Passes arguments (`argc`/`argv`) to the testbench's `main()` | Leave empty for the synthetic square; set to `my_image.pgm` to test a custom image |
+   > | `hls.csim.profile_tripcount` | Enables loop trip count profiling | Optional, for performance analysis only |
+   >
+   > **For normal use:** leave everything unchecked and click **OK**.
+
+   The output file is written inside the component's build directory:
+
+```text
+   <workspace>/sobel_hls/sobel_hls/hls/csim/build/saida_sobel.pgm
+```
+
+   > **Note:** `.pgm` files are not rendered by GitHub/GitLab markdown viewers.
+   > Convert to PNG to preview it (e.g. `convert saida_sobel.pgm saida_sobel.png`
+   > with ImageMagick, or open in GIMP and export).
+
+   **Example 1 — default synthetic square** (no `argv` set):
+
+   <p align="center">
+     <img src="docs/images/sobel_output_square.png" alt="Sobel filter output on synthetic square" width="300"><br>
+     <em>Sobel filter output — synthetic square testbench (default, no external image required)</em>
+   </p>
+
+   **Example 2 — custom image via `argv`** (using an external `.pgm`):
+
+   <p align="center">
+     <img src="docs/images/sobel_output_landscape.png" alt="Sobel filter output on Pixabay sample image" width="300"><br>
+     <em>Sobel filter output — sample image from <a href="https://pixabay.com/pt/vectors/paisagem-pintada-casa-frango-flores-10246533/">Pixabay</a></em>
+   </p>
+
+2. Run C Synthesis → check the synthesis report to confirm:
+   * II (Initiation Interval) = 1 for the main processing loop.
+   * `in_stream` and `out_stream` are implemented as AXI4-Stream (`axis`) interfaces.
+3. Export RTL (Solution → Export RTL) → generates the IP package (`.zip`) that can be imported into the Vivado IP Catalog.
 
 ---
 

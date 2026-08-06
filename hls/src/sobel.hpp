@@ -6,7 +6,7 @@
 
 // Resolucao FIXA da imagem (o hardware precisa saber o tamanho
 // para gerar o TLAST no lugar certo). Para outra resolucao,
-// recompile o IP ou passe WIDTH/HEIGHT via AXI-Lite (exercicio!).
+// recompile o IP ou passe WIDTH/HEIGHT via AXI-Lite.
 #define WIDTH  512
 #define HEIGHT 512
 

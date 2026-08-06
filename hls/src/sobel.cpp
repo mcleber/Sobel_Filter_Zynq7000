@@ -1,4 +1,4 @@
-#include "sobel.h"
+#include "sobel.hpp"
 
 // =====================================================================
 //  FILTRO SOBEL COM INTERFACE AXI4-STREAM
