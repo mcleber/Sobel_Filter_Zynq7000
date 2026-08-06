@@ -36,8 +36,6 @@ Sobel_Filter_Zynq7000/
 │   ├── src/                   # C/C++ source files
 │   └── proj/                  # Generated project files (discard)
 │
-├── ip_repo/                   # Packaged IP, independent of the workspace
-│
 ├── hw/                        # Vivado
 │   ├── hdl/                   # Custom RTL (Verilog/VHDL)
 │   ├── xdc/                   # Constraint files
@@ -49,6 +47,8 @@ Sobel_Filter_Zynq7000/
 │   ├── src/                   # C source code
 │   ├── xsa/                   # Exported hardware platforms
 │   └── workspace/             # Generated workspace (discard)
+|
+├── tools/                     # Python script to convert .pgm images into C arrays
 │
 ├── images/                    # Test images and output results
 │

@@ -282,7 +282,10 @@ Click **Run** to generate the IP package (`.zip`), which can then be added
 
 ## 3.1 Create the Project
 
-1. Open **Vivado** → **Create Project** → select **RTL Project**, **without** adding sources.
+1. Open **Vivado** → **Create Project**.
+   - **Project name**: choose a name for your project (e.g. `sobel_zynq`).
+   - **Project location**: select (or create) the `hw/proj` directory as the project location.
+   - Select **RTL Project**, **without** adding sources.
 2. Select your **target board** (if the board files are installed, e.g., Zybo, PYNQ-Z2, ZedBoard). This automatically configures the correct DDR memory and clock settings. Otherwise, select the FPGA device and configure the Processing System (PS) manually later.
 3. Open **IP Integrator** → **Create Block Design** and name it `design_1`.
 
@@ -290,9 +293,31 @@ Click **Run** to generate the IP package (`.zip`), which can then be added
 
 ## 3.2 Add the HLS IP to the IP Catalog
 
-1. Go to **Settings → IP → Repository → +**.
-2. Add the directory containing your Vitis HLS project (or the folder where you extracted the exported `.zip` IP package).
-3. The `sobel_filter` IP should now appear in the IP Catalog.
+1. Copy the exported `.zip` IP package to `hw/ip_repo/` and extract it there
+   (Vivado requires the extracted contents, not the `.zip` file itself):
+```bash
+   mkdir -p hw/ip_repo
+   cp <workspace>/sobel_hls/sobel_hls/hls/impl/ip/ip_generated.zip hw/ip_repo/
+   cd hw/ip_repo
+   unzip ip_generated.zip -d sobel_filter/
+```
+   This should produce:
+
+```text
+hw/ip_repo/sobel_filter/
+    ├── component.xml ← required by vivado to recognize the IP
+    ├── hdl/
+    └── ...
+```
+
+2. In Vivado, go to **Settings → IP → Repository → +**.
+3. Select the **extracted folder** `hw/ip_repo/sobel_filter/` (the one
+   containing `component.xml`) — not the `.zip` file or a folder that only
+   contains the `.zip`.
+4. The `sobel_filter` IP should now appear in the IP Catalog. If Vivado
+   reports "0 IP was added", double-check that `component.xml` is present
+   inside the selected folder.
+5. If the IP still doesn't show up, right-click **IP Catalog → Refresh Catalog**.
 
 ---
 
@@ -314,13 +339,14 @@ Double-click the **ZYNQ7 Processing System** block.
 
 1. If you selected a target board, click **Run Block Automation** first. This applies the board preset, including DDR and clock configuration.
 
-2. Navigate to **PS-PL Configuration → HP Slave AXI Interface** and enable **`S AXI HP0`**.
+2. Navigate to **PS-PL Configuration → HP Slave AXI Interface** and enable **`S AXI HP0 interface`**.
 
    **Why?**
 
    The DMA requires a **high-bandwidth interface to access DDR memory**. The GP interfaces are intended for low-speed register accesses (32-bit), while the HP interfaces are specifically designed for high-performance DMA transfers (64-bit).
 
-3. Verify that **`M AXI GP0`** is enabled (it usually is by default).
+3. Verify that **`M AXI GP0`** is enabled (double-click the ZYNQ7 Processing
+   System block → **PS-PL Configuration → AXI Non Secure Enablement → GP Master AXI Interface**, and check **M AXI GP0 interface**).
 
    **Why?**
 
@@ -392,11 +418,21 @@ Connection Automation normally performs these connections automatically, but alw
 
 Open the **Address Editor**.
 
-* `axi_dma_0` should receive an address within the GP0 address space, typically **`0x4040_0000`**. Record this address, as it will be referenced by the Vitis software through `xparameters.h`.
+Three address ranges should be assigned automatically:
 
-* The DMA master interfaces (`M_AXI_MM2S` and `M_AXI_S2MM`) must have access to the entire DDR memory range. If any address region appears as **Excluded** or **Unmapped**, right-click it and select **Assign Address**.
+* **`/axi_dma_0/S_AXI_LITE`** (control register interface, accessed by the PS
+  via GP0) — this is the address the Vitis software will use to configure and
+  start the DMA, referenced later through `xparameters.h`. In this project it
+  was assigned to **`0x41E0_0000`** (64K range), but the exact value depends
+  on your design — record whatever address the Address Editor assigns.
 
-Without access to DDR memory, DMA transfers will never complete.
+* **`/axi_dma_0/Data_MM2S`** and **`/axi_dma_0/Data_S2MM`** (the DMA's data
+  master interfaces) — these connect through **`S_AXI_HP0`** and must have
+  access to the full DDR memory range (in this project, `0x0` to
+  `0x1FFF_FFFF`, 512M). Without this, DMA transfers will never complete.
+
+If any address region appears as **Excluded** or **Unassigned**, right-click
+it and select **Assign Address**.
 
 ---
 
@@ -415,22 +451,41 @@ The `.xsa` file is a complete description of the hardware platform and will be i
 
 ## 4.1 Create the Platform and Application
 
-1. Open **Vitis** and create a new workspace.
-2. Select **Create Platform Project**.
+1. Open Vitis and create a new workspace `/sw/workspace/`.
+2. Select **File → New Component → Platform**.
 3. Import the exported `.xsa` file.
 4. Configure:
-
-   * **Operating System:** `standalone`
-   * **Processor:** `ps7_cortexa9_0`
+   * Operating System: `standalone`
+   * Processor: `ps7_cortexa9_0`
 5. Build the platform.
-6. Create a new **Application Project** using the generated platform.
-7. Select the **Hello World** template and name the application `sobel_app`.
+6. Create a new **Application Component** using the generated platform:
+   **File → New Component → Application**.
+   - **Name and Location**: name it `sobel_app`, location `sw/workspace/`.
+   - **Platform**: select the platform built in step 5.
+   - **Domain**: `standalone_ps7_cortexa9_0`.
+   - **Templates**: select **Empty Application (C)** — this creates the
+     component structure (including a correctly configured `CMakeLists.txt`)
+     **without** any source file inside `src/`, so you write your own code
+     from scratch instead of editing a generated `helloworld.c`.
+
+     > Alternatively, you can select the **Hello World** template instead.
+     > This generates a `helloworld.c` file automatically — in that case,
+     > skip to **4.2** and simply replace its contents with `main.c` (no
+     > need to create a new file or touch `CMakeLists.txt`).
+7. Click **Finish**.
 
 ---
 
 ## 4.2 Add the Application Source Code
 
-Replace the generated `helloworld.c` with the `main.c` implementation provided in this repository:
+If you started from **Empty Application**: in the Explorer, right-click the
+`src/` folder of the `sobel_app` component → **New File**, and name it
+`main.c`.
+
+If you started from the **Hello World** template: simply replace the
+contents of the generated `helloworld.c` with the implementation below.
+
+Add the `main.c` implementation provided in this repository:
 
 ```text
 sw/
@@ -443,11 +498,11 @@ The application performs the following steps:
 1. Generates (or loads) a grayscale test image into DDR memory.
 2. Initializes and configures the AXI DMA.
 3. Flushes and invalidates the data cache to guarantee memory coherency.
-4. Transfers the image from DDR memory to the Sobel accelerator through the **MM2S** DMA channel.
-5. Receives the processed image through the **S2MM** DMA channel.
+4. Transfers the image from DDR memory to the Sobel accelerator through the MM2S DMA channel.
+5. Receives the processed image through the S2MM DMA channel.
 6. Waits until both DMA transfers complete.
 7. Verifies a few output pixels.
-8. Sends the resulting image through the UART in **PGM** format.
+8. Sends the resulting image through the UART in PGM format.
 
 The implementation also demonstrates several best practices for Zynq bare-metal applications, including:
 
@@ -457,19 +512,96 @@ The implementation also demonstrates several best practices for Zynq bare-metal 
 * Memory alignment.
 * UART image transmission.
 
+> **Troubleshooting: `XPAR_AXIDMA_0_DEVICE_ID` undeclared**
+>
+> Starting with Vitis 2025.x, platforms are generated using the **System
+> Device Tree (SDT)** flow (identifiable by the `-DSDT` compiler flag in the
+> build log). In this flow, `XPAR_<IP>_DEVICE_ID` macros no longer exist —
+> drivers are looked up by **base address** instead of a numeric device ID.
+>
+> | Classic flow (pre-2025.x) | SDT flow (2025.x, this project) |
+> |---|---|
+> | `XAxiDma_LookupConfig(XPAR_AXIDMA_0_DEVICE_ID)` | `XAxiDma_LookupConfig(XPAR_XAXIDMA_0_BASEADDR)` |
+>
+> To find the correct macro for your own hardware design, search the
+> platform's generated headers:
+> ```bash
+> grep -r "AXIDMA" sw/workspace/platform/export/platform/sw/standalone_ps7_cortexa9_0/include/
+> ```
+> Look for the line inside `xparameters.h` (not `xaxidma_hw.h` or
+> `xaxidma_bd.h`, which only contain register offsets/bitmasks) matching
+> the pattern:
+> ```c
+> #define XPAR_XAXIDMA_0_BASEADDR 0x41e00000
+> ```
+> This value should match the address assigned to `axi_dma_0` in the Vivado
+> Address Editor (see **3.7 Address Assignment**). Use this exact macro name
+> in your `XAxiDma_LookupConfig()` call — it may differ slightly if you
+> named the DMA instance differently in the Block Design.
+
+---
+
+### 4.2.1 Using Your Own Image on Hardware
+
+Since the bare-metal application has no filesystem, the image must be
+embedded directly into the firmware as a C array before building.
+
+**1. Convert your PGM image to a C header**
+
+A helper script is provided at `tools/convert_pgm_to_c.py`:
+
+```bash
+python3 tools/convert_pgm_to_c.py cat.pgm sw/src/test_image_data.h test_image
+```
+
+This generates a header with:
+- `TEST_IMAGE_WIDTH` / `TEST_IMAGE_HEIGHT` — image dimensions
+- `test_image[]` — the raw pixel array, ready to embed in the firmware
+
+> **Note:** the image must match the resolution the hardware was built for
+> (`WIDTH x HEIGHT` in `sobel.hpp`, `512x512` in this project). If it
+> doesn't match, resize it first (e.g. in GIMP: **Image → Scale Image**).
+
+**2. Use the embedded image in `main.c`**
+
+The provided `main.c` already includes `test_image_data.h` and calls
+`load_custom_image()` (instead of `make_test_image()`) by default:
+
+```c
+#include "test_image_data.h"
+...
+load_custom_image();   // uses the embedded image
+// make_test_image();  // uncomment to use the synthetic square instead
+```
+
+**3. Rebuild**
+
+Re-run the build (`F7` or the **Build** command in the Flow Navigator) before
+proceeding to **4.3 Run the Application on the Board** — the accelerator will
+now process your image instead of the synthetic square.
+
 ---
 
 ## 4.3 Run the Application on the Board
 
 1. Connect the board through **JTAG** and **UART**.
-2. Configure the board boot mode for **JTAG**.
-3. Right-click **`sobel_app`** and select:
 
-   **Run As → Launch Hardware (Single Application Debug)**
+2. Configure the board boot mode for **JTAG**, then program the FPGA with
+   the generated bitstream via **Vitis → Program Device...** (select the
+   `.bit`/`.pdi` generated by Vivado and the target board/hw_server
+   connection).
 
-This programs the FPGA with the generated bitstream and downloads the application ELF to the ARM processor.
+3. In the **Flow Navigator**, select the `sobel_app` component. Hover over
+   **Run** to reveal the hidden **Open Settings** icon, and confirm the
+   launch configuration target is set to **Hardware**. Then click **Run**
+   directly in the Flow Navigator.
 
-4. Open a serial terminal configured for **115200 baud**.
+   This downloads the application ELF to the ARM processor and executes it
+   on the board.
+
+4. Open a serial terminal via **Vitis → Serial Monitor**, select the
+   correct port (usually `/dev/ttyUSBx` on Linux — pick the one labeled
+   **Xilinx**), and set the baud rate to **115200**.
 
 ---
 
@@ -480,8 +612,8 @@ The simplest approach (without Ethernet, SD card, or additional drivers) is to c
 On **Linux**, capture the serial output before resetting the board:
 
 ```bash
-stty 115200 raw < /dev/ttyUSB0
-cat /dev/ttyUSB0 > capture.bin
+stty 115200 raw < /dev/ttyUSBx
+cat /dev/ttyUSBx > capture.bin
 ```
 
 Stop the capture (`Ctrl+C`) after the transmission finishes.
