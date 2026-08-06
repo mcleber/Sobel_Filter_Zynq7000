@@ -252,7 +252,29 @@ The design has **fixed dimensions** (`WIDTH` x `HEIGHT`, defined in `sobel.hpp`)
    >    syn.top=sobel_filter
    >    ```
    > 6. Re-run **C Synthesis**.
-3. Export RTL (Solution → Export RTL) → generates the IP package (`.zip`) that can be imported into the Vivado IP Catalog.
+3. Export/Package the design → in the Vitis Unified IDE, this step is called
+   **PACKAGE** in the Flow Navigator (equivalent to "Export RTL" in the classic
+   Vitis HLS interface).
+
+   Click **Run** under **PACKAGE**. In the **Run PACKAGE Basic Settings** dialog:
+   - `hls.package.output.format` → set to **`ip_catalog`** (generates a `.zip`
+     package compatible with the Vivado IP Catalog; the alternative, `xo`, is
+     only used for the Vitis Kernel Flow acceleration flow, not needed here).
+   - `hls.package.output.file` → optional; leave empty to use the default
+     location (inside the component's `impl/ip` folder), or specify a custom
+     path/filename.
+   - The IP metadata fields (`description`, `display_name`, `vendor`,
+     `version`, etc.) are optional — they only populate informational fields
+     shown later in the Vivado IP Catalog.
+
+Click **Run** to generate the IP package (`.zip`), which can then be added
+   as a repository in Vivado's IP Catalog (**Settings → IP → Repository**).
+
+   The generated package is located at:
+
+```text
+   <workspace>/sobel_hls/sobel_hls/hls/impl/ip/ip_generated.zip
+```
 
 ---
 
