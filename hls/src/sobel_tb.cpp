@@ -9,7 +9,7 @@ int main(int argc, char **argv) {
 
     // PT: Caminho de saida padrao, pode ser sobrescrito via argv[2]
     // EN: Default output path, can be overridden via argv[2]
-    const char *output_path = "saida_sobel.pgm";
+    const char *output_path = "sobel_output.pgm";
 
     if (argc >= 2) {
         // PT: Um caminho de imagem foi passado -> tenta carregar do disco.

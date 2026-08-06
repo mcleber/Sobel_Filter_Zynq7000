@@ -230,6 +230,28 @@ The design has **fixed dimensions** (`WIDTH` x `HEIGHT`, defined in `sobel.hpp`)
 2. Run C Synthesis → check the synthesis report to confirm:
    * II (Initiation Interval) = 1 for the main processing loop.
    * `in_stream` and `out_stream` are implemented as AXI4-Stream (`axis`) interfaces.
+
+   > **Troubleshooting: "Top function is not specified for component"**
+   >
+   > If C Synthesis fails with this error, the `hls.syn.top` setting is empty or
+   > was not saved to the component's configuration file. To fix it:
+   >
+   > 1. Open **`hls_config.cfg`** in the Config Editor (double-click it in the
+   >    Explorer under the component's **Settings**).
+   > 2. Search for **`syn.top`** in the settings search bar.
+   > 3. Under **hls.syn.top — Name of the function to be synthesized**, type the
+   >    exact name of your top-level function (e.g. `sobel_filter`), then press
+   >    **Enter** to confirm the value — simply typing it without pressing Enter
+   >    may not persist the change.
+   > 4. Save the file (**Ctrl+S**) — check that the tab no longer shows an
+   >    unsaved-changes indicator (a dot next to the file name).
+   > 5. Optionally, verify the raw file contents using the **`</>`** (code view)
+   >    icon in the Config Editor toolbar; it should contain:
+   >    ```ini
+   >    [hls]
+   >    syn.top=sobel_filter
+   >    ```
+   > 6. Re-run **C Synthesis**.
 3. Export RTL (Solution → Export RTL) → generates the IP package (`.zip`) that can be imported into the Vivado IP Catalog.
 
 ---
