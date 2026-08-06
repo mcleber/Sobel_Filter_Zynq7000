@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spirit:component xmlns:xilinx="http://www.xilinx.com" xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <spirit:vendor>xilinx.com</spirit:vendor>
+  <spirit:vendor>mcleber</spirit:vendor>
   <spirit:library>hls</spirit:library>
   <spirit:name>sobel_filter</spirit:name>
   <spirit:version>1.0</spirit:version>
@@ -744,10 +744,10 @@
       <xilinx:taxonomies>
         <xilinx:taxonomy>/VITIS_HLS_IP</xilinx:taxonomy>
       </xilinx:taxonomies>
-      <xilinx:displayName>Sobel_filter</xilinx:displayName>
+      <xilinx:displayName>Sobel Filter</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2114728583</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2026-08-06T01:24:12Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2114729563</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2026-08-06T17:43:35Z</xilinx:coreCreationDateTime>
       <xilinx:sdxKernelAttributes>
         <xilinx:sdx_kernel>true</xilinx:sdx_kernel>
         <xilinx:sdx_kernel_type>hls</xilinx:sdx_kernel_type>

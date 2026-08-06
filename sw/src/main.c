@@ -77,20 +77,47 @@ void load_custom_image(void)
        return value of XAxiDma_SimpleTransfer() alone doesn't show. */
 #define DMA_TIMEOUT_CYCLES 10000000
 
+
 int wait_dma(XAxiDma *dma, int direction, const char *label)
 {
     int timeout = DMA_TIMEOUT_CYCLES;
-    while (XAxiDma_Busy(dma, direction) && timeout--) ;
 
-    if (timeout <= 0) {
-        u32 sr = XAxiDma_ReadReg(dma->RegBase,
-                    (direction == XAXIDMA_DMA_TO_DEVICE)
-                        ? XAXIDMA_TX_OFFSET + XAXIDMA_SR_OFFSET
-                        : XAXIDMA_RX_OFFSET + XAXIDMA_SR_OFFSET);
-        xil_printf("TIMEOUT esperando %s! Status register = 0x%08x\r\n", label, sr);
+    while (XAxiDma_Busy(dma, direction) && timeout--)
+        ;
+
+    if (timeout <= 0)
+    {
+        u32 base =
+            (direction == XAXIDMA_DMA_TO_DEVICE) ?
+            XAXIDMA_TX_OFFSET :
+            XAXIDMA_RX_OFFSET;
+
+        xil_printf("\r\n%s TIMEOUT\r\n", label);
+
+        xil_printf("CR   = %08X\r\n",
+            XAxiDma_ReadReg(dma->RegBase,
+                base + XAXIDMA_CR_OFFSET));
+
+        xil_printf("SR   = %08X\r\n",
+            XAxiDma_ReadReg(dma->RegBase,
+                base + XAXIDMA_SR_OFFSET));
+
+        xil_printf("ADDR = %08X\r\n",
+            XAxiDma_ReadReg(dma->RegBase,
+                base +
+                ((direction == XAXIDMA_DMA_TO_DEVICE) ?
+                XAXIDMA_SRCADDR_OFFSET :
+                XAXIDMA_DESTADDR_OFFSET)));
+
+        xil_printf("LEN  = %08X\r\n",
+            XAxiDma_ReadReg(dma->RegBase,
+                base + XAXIDMA_BUFFLEN_OFFSET));
+
         return XST_FAILURE;
     }
-    xil_printf("%s completou normalmente\r\n", label);
+
+    xil_printf("%s completed\r\n", label);
+
     return XST_SUCCESS;
 }
 
@@ -98,32 +125,112 @@ int wait_dma(XAxiDma *dma, int direction, const char *label)
 
 int run_sobel(void)
 {
-    /* PT: Garante que a CPU escreveu os dados na DDR antes do DMA ler.
-       EN: Ensures the CPU has written the data to DDR before the DMA reads it. */
+    //u32 status;
+    int status;
+
+    for (int i = 0; i < 32; i++)
+    {
+        xil_printf("%3d ", img_out[i]);
+    }
+    xil_printf("\r\n");
+
+    xil_printf("INPUT:\r\n");
+    for (int i = 0; i < 32; i++)
+    {
+        xil_printf("%3d ", img[i]);
+    }
+    xil_printf("\r\n");
+
+
+    /* Flush cache */
     Xil_DCacheFlushRange((UINTPTR)img, IMG_SIZE);
     Xil_DCacheFlushRange((UINTPTR)img_out, IMG_SIZE);
 
-    int status = XAxiDma_SimpleTransfer(&AxiDma, (UINTPTR)img_out, IMG_SIZE,
-                                         XAXIDMA_DEVICE_TO_DMA);
-    if (status != XST_SUCCESS) {
-        xil_printf("ERROR: S2MM transfer setup failed\r\n");
+    /*------------------------------------------------------------*/
+    /* Start S2MM                                                  */
+    /*------------------------------------------------------------*/
+    status = XAxiDma_SimpleTransfer(
+        &AxiDma,
+        (UINTPTR)img_out,
+        IMG_SIZE,
+        XAXIDMA_DEVICE_TO_DMA);
+
+    xil_printf("S2MM SimpleTransfer = %d\r\n", status);
+
+    if (status != XST_SUCCESS)
         return XST_FAILURE;
-    }
 
-    status = XAxiDma_SimpleTransfer(&AxiDma, (UINTPTR)img, IMG_SIZE,
-                                     XAXIDMA_DMA_TO_DEVICE);
-    if (status != XST_SUCCESS) {
-        xil_printf("ERROR: MM2S transfer setup failed\r\n");
+    /*------------------------------------------------------------*/
+    /* Start MM2S                                                  */
+    /*------------------------------------------------------------*/
+    status = XAxiDma_SimpleTransfer(
+        &AxiDma,
+        (UINTPTR)img,
+        IMG_SIZE,
+        XAXIDMA_DMA_TO_DEVICE);
+
+    xil_printf("MM2S SimpleTransfer = %d\r\n", status);
+
+    if (status != XST_SUCCESS)
         return XST_FAILURE;
-    }
 
-    /* PT: Polling com timeout ate as duas transferencias terminarem.
-       EN: Polling with timeout until both transfers complete. */
-    if (wait_dma(&AxiDma, XAXIDMA_DMA_TO_DEVICE, "MM2S") != XST_SUCCESS) return XST_FAILURE;
-    if (wait_dma(&AxiDma, XAXIDMA_DEVICE_TO_DMA, "S2MM") != XST_SUCCESS) return XST_FAILURE;
+    xil_printf("\r\n");
+    xil_printf("=========== DMA STATUS AFTER START ===========\r\n");
 
-    /* PT: Invalida o cache antes da CPU ler os dados escritos pelo DMA.
-       EN: Invalidate the cache before the CPU reads the data written by DMA. */
+    xil_printf("MM2S CR  = %08X\r\n",
+        XAxiDma_ReadReg(AxiDma.RegBase,
+            XAXIDMA_TX_OFFSET + XAXIDMA_CR_OFFSET));
+
+    xil_printf("MM2S SR  = %08X\r\n",
+        XAxiDma_ReadReg(AxiDma.RegBase,
+            XAXIDMA_TX_OFFSET + XAXIDMA_SR_OFFSET));
+
+    xil_printf("MM2S SA  = %08X\r\n",
+        XAxiDma_ReadReg(AxiDma.RegBase,
+            XAXIDMA_TX_OFFSET + XAXIDMA_SRCADDR_OFFSET));
+
+    xil_printf("MM2S LEN = %08X\r\n",
+        XAxiDma_ReadReg(AxiDma.RegBase,
+            XAXIDMA_TX_OFFSET + XAXIDMA_BUFFLEN_OFFSET));
+
+    xil_printf("\r\n");
+
+    xil_printf("S2MM CR  = %08X\r\n",
+        XAxiDma_ReadReg(AxiDma.RegBase,
+            XAXIDMA_RX_OFFSET + XAXIDMA_CR_OFFSET));
+
+    xil_printf("S2MM SR  = %08X\r\n",
+        XAxiDma_ReadReg(AxiDma.RegBase,
+            XAXIDMA_RX_OFFSET + XAXIDMA_SR_OFFSET));
+
+    xil_printf("S2MM DA  = %08X\r\n",
+        XAxiDma_ReadReg(AxiDma.RegBase,
+            XAXIDMA_RX_OFFSET + XAXIDMA_DESTADDR_OFFSET));
+
+    xil_printf("S2MM LEN = %08X\r\n",
+        XAxiDma_ReadReg(AxiDma.RegBase,
+            XAXIDMA_RX_OFFSET + XAXIDMA_BUFFLEN_OFFSET));
+
+
+    xil_printf("MM2S Busy = %d\r\n",
+            XAxiDma_Busy(&AxiDma, XAXIDMA_DMA_TO_DEVICE));
+
+    xil_printf("S2MM Busy = %d\r\n",
+            XAxiDma_Busy(&AxiDma, XAXIDMA_DEVICE_TO_DMA));
+
+
+    xil_printf("=============================================\r\n\r\n");
+
+    if (wait_dma(&AxiDma,
+                 XAXIDMA_DMA_TO_DEVICE,
+                 "MM2S") != XST_SUCCESS)
+        return XST_FAILURE;
+
+    if (wait_dma(&AxiDma,
+                 XAXIDMA_DEVICE_TO_DMA,
+                 "S2MM") != XST_SUCCESS)
+        return XST_FAILURE;
+
     Xil_DCacheInvalidateRange((UINTPTR)img_out, IMG_SIZE);
 
     return XST_SUCCESS;
@@ -150,12 +257,30 @@ int main(void)
 
     if (init_dma() != XST_SUCCESS) return -1;
 
+    xil_printf("Endereco de img     = 0x%08X\r\n", (unsigned int)(UINTPTR)img);
+    xil_printf("Endereco de img_out = 0x%08X\r\n", (unsigned int)(UINTPTR)img_out);
+
     /* PT: Troque para make_test_image() se quiser voltar ao quadrado sintetico.
        EN: Switch to make_test_image() to go back to the synthetic square. */
     load_custom_image();
 
     xil_printf("Processando %dx%d na PL...\r\n", WIDTH, HEIGHT);
     if (run_sobel() != XST_SUCCESS) return -1;
+
+
+    int p = 200 * WIDTH + 120;
+
+    xil_printf("\r\nINPUT CENTER:\r\n");
+    for (int i = 0; i < 32; i++)
+        xil_printf("%3d ", img[p + i]);
+
+    xil_printf("\r\n\r\nOUTPUT CENTER:\r\n");
+    for (int i = 0; i < 32; i++)
+        xil_printf("%3d ", img_out[p + i]);
+
+    xil_printf("\r\n");
+
+
     xil_printf("Concluido!\r\n");
 
     /* PT: Confere alguns pixels: a borda (linha 129+) deve ter valores
@@ -166,6 +291,9 @@ int main(void)
        image differs from the synthetic square. */
     xil_printf("pixel borda  (200,129) = %d (esperado ~255)\r\n",
                img_out[200 * WIDTH + 129]);
+
+
+    xil_printf("END_OF_LOG\r\n");
 
     send_image_uart(img_out);
 

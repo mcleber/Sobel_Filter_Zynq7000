@@ -116,7 +116,7 @@ The complete source code is already included in this repository under the hls/sr
    - **Existing File** (reuse an existing one)
    - **Generate from Vitis HLS Project** (from an old `hls.app`)
 6. On the following pages you will:
-   - Add the source files (.cpp/.h) and define the **Top Function** (e.g., `sobel_filter`)
+   - Add the source files (.cpp/.hpp) and define the **Top Function** (e.g., `sobel_filter`)
    - Add the **testbench** files (optional, but recommended)
    - Choose the **Part/Device** (e.g., `xc7z020clg400-1`)
    - Set the **Clock Period** (e.g., 10 ns) and the **Flow Target** to **Vivado IP Flow** (required to later add the design to the Vivado IP Catalog and use it in a Block Design)
@@ -170,7 +170,7 @@ Running the C Simulation before hardware synthesis is highly recommended to vali
 
 The design has **fixed dimensions** (`WIDTH` x `HEIGHT`, defined in `sobel.hpp`), so any custom image must match that resolution exactly.
 
-1. Convert/resize your image to grayscale PGM (binary, P5) using GIMP: resize to `WIDTH x HEIGHT` first (**Image → Scale Image**), then **File → Export As → `.pgm`**, choosing **Raw** encoding when prompted.
+1. Convert/resize your image to grayscale PGM (binary, P5) using **GIMP**: resize to `WIDTH x HEIGHT` first (**Image → Scale Image**), then **File → Export As → `.pgm`**, choosing **Raw** encoding when prompted.
 2. Pass the image path via the `hls.csim.argv` field in the C Simulation dialog (see table above):
 
 ```text
@@ -187,7 +187,7 @@ The design has **fixed dimensions** (`WIDTH` x `HEIGHT`, defined in `sobel.hpp`)
 
 ## 2.4 Synthesize and Export
 
-1. Run C Simulation → verify the generated `saida_sobel.pgm` (it should display only the edges of the square, or the edges detected in your custom image).
+1. **Run C Simulation** → verify the generated `sobel_output.pgm` (it should display only the edges of the square, or the edges detected in your custom image).
 
    > **C Simulation Settings**
    >
@@ -206,7 +206,7 @@ The design has **fixed dimensions** (`WIDTH` x `HEIGHT`, defined in `sobel.hpp`)
    The output file is written inside the component's build directory:
 
 ```text
-   <workspace>/sobel_hls/sobel_hls/hls/csim/build/saida_sobel.pgm
+   <workspace>/sobel_hls/sobel_hls/hls/csim/build/sobel_output.pgm
 ```
 
    > **Note:** `.pgm` files are not rendered by GitHub/GitLab markdown viewers.
@@ -227,7 +227,7 @@ The design has **fixed dimensions** (`WIDTH` x `HEIGHT`, defined in `sobel.hpp`)
      <em>Sobel filter output — sample image from <a href="https://pixabay.com/pt/vectors/paisagem-pintada-casa-frango-flores-10246533/">Pixabay</a></em>
    </p>
 
-2. Run C Synthesis → check the synthesis report to confirm:
+2. **Run C Synthesis** → check the synthesis report to confirm:
    * II (Initiation Interval) = 1 for the main processing loop.
    * `in_stream` and `out_stream` are implemented as AXI4-Stream (`axis`) interfaces.
 
@@ -252,7 +252,7 @@ The design has **fixed dimensions** (`WIDTH` x `HEIGHT`, defined in `sobel.hpp`)
    >    syn.top=sobel_filter
    >    ```
    > 6. Re-run **C Synthesis**.
-3. Export/Package the design → in the Vitis Unified IDE, this step is called
+3. **Export/Package the design** → in the Vitis Unified IDE, this step is called
    **PACKAGE** in the Flow Navigator (equivalent to "Export RTL" in the classic
    Vitis HLS interface).
 
