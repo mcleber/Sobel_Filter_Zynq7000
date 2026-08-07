@@ -128,18 +128,18 @@ int run_sobel(void)
     //u32 status;
     int status;
 
-    for (int i = 0; i < 32; i++)
-    {
-        xil_printf("%3d ", img_out[i]);
-    }
-    xil_printf("\r\n");
+for (int i = 0; i < 32; i++)
+{
+    xil_printf("%3d ", img_out[i]);
+}
+xil_printf("\r\n");
 
-    xil_printf("INPUT:\r\n");
-    for (int i = 0; i < 32; i++)
-    {
-        xil_printf("%3d ", img[i]);
-    }
-    xil_printf("\r\n");
+xil_printf("INPUT:\r\n");
+for (int i = 0; i < 32; i++)
+{
+    xil_printf("%3d ", img[i]);
+}
+xil_printf("\r\n");
 
 
     /* Flush cache */
@@ -211,7 +211,6 @@ int run_sobel(void)
         XAxiDma_ReadReg(AxiDma.RegBase,
             XAXIDMA_RX_OFFSET + XAXIDMA_BUFFLEN_OFFSET));
 
-
     xil_printf("MM2S Busy = %d\r\n",
             XAxiDma_Busy(&AxiDma, XAXIDMA_DMA_TO_DEVICE));
 
@@ -267,7 +266,6 @@ int main(void)
     xil_printf("Processando %dx%d na PL...\r\n", WIDTH, HEIGHT);
     if (run_sobel() != XST_SUCCESS) return -1;
 
-
     int p = 200 * WIDTH + 120;
 
     xil_printf("\r\nINPUT CENTER:\r\n");
@@ -291,6 +289,7 @@ int main(void)
        image differs from the synthetic square. */
     xil_printf("pixel borda  (200,129) = %d (esperado ~255)\r\n",
                img_out[200 * WIDTH + 129]);
+
 
 
     xil_printf("END_OF_LOG\r\n");
