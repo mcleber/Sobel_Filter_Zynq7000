@@ -29,7 +29,7 @@ Sobel_Filter_Zynq7000/
 │
 ├── docs/                             # Detailed implementation guides
 │   ├── tutorial_sobel_filter_p1.md   # Main tutorial: simulation and implementation
-│   └── tutorial_sobel_filter_p2.md   # Addendum 1: HDMI output using AXI VDMA
+│   └── tutorial_sobel_filter_p2.md   # HDMI output using AXI VDMA
 │
 ├── hls/                       # Vitis HLS
 │   ├── src/                   # C/C++ source files
