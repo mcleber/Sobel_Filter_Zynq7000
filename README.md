@@ -28,9 +28,8 @@ The project follows a modular organization that separates version-controlled sou
 Sobel_Filter_Zynq7000/
 │
 ├── docs/                             # Detailed implementation guides
-│   ├── tutorial_sobel_filter_p1.md   # Main tutorial (Parts 0–4)
-│   ├── tutorial_sobel_filter_p2.md   # Addendum 1: HDMI output using AXI VDMA
-│   └── tutorial_sobel_filter_p3.md   # Addendum 2: BRAM, Interrupts, RGB and Benchmark
+│   ├── tutorial_sobel_filter_p1.md   # Main tutorial: simulation and implementation
+│   └── tutorial_sobel_filter_p2.md   # Addendum 1: HDMI output using AXI VDMA
 │
 ├── hls/                       # Vitis HLS
 │   ├── src/                   # C/C++ source files
@@ -64,13 +63,12 @@ Sobel_Filter_Zynq7000/
 
 ## Implementation Guide
 
-The implementation is divided into three documents. Reading them in order is recommended.
+The implementation is divided into two documents. Reading them in order is recommended.
 
 | Part | Document | Main Topics |
 |:---:|----------|-------------|
 | 1 | [tutorial_sobel_filter_p1.md](docs/tutorial_sobel_filter_p1.md) | Vitis HLS, Sobel IP, AXI4-Stream, AXI DMA, Vivado, Vitis |
 | 2 | [tutorial_sobel_filter_p2.md](docs/tutorial_sobel_filter_p2.md) | AXI VDMA, Video Timing Controller (VTC), HDMI Output |
-| 3 | [tutorial_sobel_filter_p3.md](docs/tutorial_sobel_filter_p3.md) | BRAM, Interrupts, RGB Image Processing, Benchmarking |
 
 ---
 

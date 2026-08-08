@@ -52,15 +52,15 @@ reg    ap_block_state2_pp0_stage0_iter1;
 reg    ap_enable_reg_pp0_iter1;
 wire    ap_loop_exit_ready_pp0_iter1_reg;
 reg    ap_block_pp0_stage0_subdone;
-wire   [0:0] icmp_ln19_fu_130_p2;
+wire   [0:0] icmp_ln23_fu_132_p2;
 reg    ap_condition_exit_pp0_iter0_stage0;
 reg    ap_ready_int;
 reg    in_stream_TDATA_blk_n;
 wire    ap_block_pp0_stage0;
 reg    out_stream_TDATA_blk_n;
 reg    ap_block_pp0_stage0_11001;
-reg   [17:0] indvar_flatten2_fu_68;
-wire   [17:0] add_ln19_fu_124_p2;
+reg   [17:0] indvar_flatten2_fu_66;
+wire   [17:0] add_ln23_fu_126_p2;
 wire    ap_loop_init;
 reg   [17:0] ap_sig_allocacmp_indvar_flatten2_load;
 reg    ap_block_pp0_stage0_01001;
@@ -106,7 +106,7 @@ wire    ap_ce_reg;
 initial begin
 #0 ap_CS_fsm = 1'd1;
 #0 ap_enable_reg_pp0_iter1 = 1'b0;
-#0 indvar_flatten2_fu_68 = 18'd0;
+#0 indvar_flatten2_fu_66 = 18'd0;
 end
 
 sobel_filter_flow_control_loop_pipe_no_ap_cont flow_control_loop_pipe_no_ap_cont_U(
@@ -185,7 +185,7 @@ sobel_filter_regslice_both #(
 regslice_both_out_stream_V_data_V_U(
     .ap_clk(ap_clk),
     .ap_rst(ap_rst_n_inv),
-    .data_in(8'd255),
+    .data_in(in_stream_TDATA_int_regslice),
     .vld_in(out_stream_TVALID_int_regslice),
     .ack_in(out_stream_TREADY_int_regslice),
     .data_out(out_stream_TDATA),
@@ -256,12 +256,12 @@ end
 
 always @ (posedge ap_clk) begin
     if (((1'b0 == ap_block_pp0_stage0_11001) & (1'b1 == ap_CS_fsm_pp0_stage0))) begin
-        indvar_flatten2_fu_68 <= add_ln19_fu_124_p2;
+        indvar_flatten2_fu_66 <= add_ln23_fu_126_p2;
     end
 end
 
 always @ (*) begin
-    if (((icmp_ln19_fu_130_p2 == 1'd1) & (1'b0 == ap_block_pp0_stage0_subdone) & (1'b1 == ap_CS_fsm_pp0_stage0))) begin
+    if (((icmp_ln23_fu_132_p2 == 1'd1) & (1'b0 == ap_block_pp0_stage0_subdone) & (1'b1 == ap_CS_fsm_pp0_stage0))) begin
         ap_condition_exit_pp0_iter0_stage0 = 1'b1;
     end else begin
         ap_condition_exit_pp0_iter0_stage0 = 1'b0;
@@ -282,7 +282,7 @@ always @ (*) begin
     if (((ap_loop_init == 1'b1) & (1'b0 == ap_block_pp0_stage0) & (1'b1 == ap_CS_fsm_pp0_stage0))) begin
         ap_sig_allocacmp_indvar_flatten2_load = 18'd0;
     end else begin
-        ap_sig_allocacmp_indvar_flatten2_load = indvar_flatten2_fu_68;
+        ap_sig_allocacmp_indvar_flatten2_load = indvar_flatten2_fu_66;
     end
 end
 
@@ -329,7 +329,7 @@ always @ (*) begin
     endcase
 end
 
-assign add_ln19_fu_124_p2 = (ap_sig_allocacmp_indvar_flatten2_load + 18'd1);
+assign add_ln23_fu_126_p2 = (ap_sig_allocacmp_indvar_flatten2_load + 18'd1);
 
 assign ap_CS_fsm_pp0_stage0 = ap_CS_fsm[32'd0];
 
@@ -363,7 +363,7 @@ always @ (*) begin
     ap_rst_n_inv = ~ap_rst_n;
 end
 
-assign icmp_ln19_fu_130_p2 = ((ap_sig_allocacmp_indvar_flatten2_load == 18'd262143) ? 1'b1 : 1'b0);
+assign icmp_ln23_fu_132_p2 = ((ap_sig_allocacmp_indvar_flatten2_load == 18'd262143) ? 1'b1 : 1'b0);
 
 assign in_stream_TREADY = regslice_both_in_stream_V_data_V_U_ack_in;
 

@@ -200,7 +200,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>7a59eeda</spirit:value>
+            <spirit:value>c109c3fb</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -216,7 +216,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>88b44239</spirit:value>
+            <spirit:value>03f2e2cd</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -232,7 +232,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>56261ca1</spirit:value>
+            <spirit:value>cee1d64c</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -248,7 +248,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>c6e255be</spirit:value>
+            <spirit:value>5887c81b</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -604,7 +604,7 @@
       <spirit:file>
         <spirit:name>hdl/vhdl/sobel_filter.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_664133bf</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_dbf7080b</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -694,8 +694,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Sobel Filter Pass Through</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2114730062</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2026-08-07T02:02:54Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2114731457</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2026-08-08T01:17:39Z</xilinx:coreCreationDateTime>
       <xilinx:sdxKernelAttributes>
         <xilinx:sdx_kernel>true</xilinx:sdx_kernel>
         <xilinx:sdx_kernel_type>hls</xilinx:sdx_kernel_type>
@@ -704,7 +704,7 @@
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2025.2.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="e6d31ac1"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="def25000"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="bd176890"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="90147e00"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="7d74b638"/>
     </xilinx:packagingInfo>
