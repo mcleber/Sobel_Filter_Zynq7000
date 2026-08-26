@@ -1,13 +1,41 @@
 <a id="top"></a>
 
-| Title | Part 1 — Sobel Edge Detection Filter |
-| --- | --- |
-| File | `tutorial_sobel_filter_p1.md` |
-| Date | 05 Aug 2026 |
-
----
-
 # Part 1 — Sobel Edge Detection Filter
+
+[← Back to Readme](../README.md)
+
+## Table of Contents
+
+- [1. Zynq (PS + PL) Using AXI DMA](#1-zynq-ps--pl-using-axi-dma)
+  - [1.1 Understanding AXI Once and for All](#11-understanding-axi-once-and-for-all)
+  - [1.2 Essential Handshake Signals (Applies to All Three)](#12-essential-handshake-signals-applies-to-all-three)
+  - [1.3 The Role of AXI DMA](#13-the-role-of-axi-dma)
+  - [1.4 Complete Project Architecture](#14-complete-project-architecture)
+- [2. Creating the Sobel IP in Vitis HLS](#2-creating-the-sobel-ip-in-vitis-hls)
+  - [2.1 Create the Project](#21-create-the-project)
+  - [2.2 Add the Source Files](#22-add-the-source-files)
+  - [2.3 Add the Testbench](#23-add-the-testbench)
+    - [Using Your Own Image](#using-your-own-image)
+  - [2.4 Synthesize and Export](#24-synthesize-and-export)
+- [3. Creating the Block Design in Vivado](#3-creating-the-block-design-in-vivado)
+  - [3.1 Create the Project](#31-create-the-project)
+  - [3.2 Add the HLS IP to the IP Catalog](#32-add-the-hls-ip-to-the-ip-catalog)
+  - [3.3 Build the Block Design](#33-build-the-block-design)
+  - [3.4 Configure the Zynq Processing System](#34-configure-the-zynq-processing-system)
+  - [3.5 Configure the AXI DMA](#35-configure-the-axi-dma)
+  - [3.6 Connect the Blocks](#36-connect-the-blocks)
+  - [3.7 Address Assignment](#37-address-assignment)
+  - [3.8 Generate the Hardware Platform](#38-generate-the-hardware-platform)
+- [4. Developing the Bare-Metal Application in Vitis](#4-developing-the-bare-metal-application-in-vitis)
+  - [4.1 Create the Platform and Application](#41-create-the-platform-and-application)
+  - [4.2 Add the Application Source Code](#42-add-the-application-source-code)
+    - [4.2.1 Using Your Own Image on Hardware](#421-using-your-own-image-on-hardware)
+  - [4.3 Run the Application on the Board](#43-run-the-application-on-the-board)
+  - [4.4 View the Processed Image on the Host PC](#44-view-the-processed-image-on-the-host-pc)
+- [5. Troubleshooting](#5-troubleshooting)
+- [6. Debugging Tip](#6-debugging-tip)
+- [7. AXI Mental Model Recap](#7-axi-mental-model-recap)
+
 
 ## 1. Zynq (PS + PL) Using AXI DMA
 
@@ -686,6 +714,8 @@ With the ILA, you can observe signals such as `TVALID`, `TREADY`, and `TLAST` in
 
 ---
 
-← [Back to Readme](../README.md) | ↑ [Back to top](#top)
+[↑ Back to top](#top)
 
-Next: [Part 2 — HDMI output using AXI VDMA](tutorial_sobel_filter_p2.md)
+[← Back to Readme](../README.md)
+
+[→ Part 2 — HDMI output using AXI VDMA](tutorial_sobel_filter_p2.md)

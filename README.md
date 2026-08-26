@@ -14,15 +14,76 @@
 
 ## Overview
 
-This repository contains the implementation of a hardware-accelerated image processing system for the **Xilinx Zynq-7000** architecture (ARM Cortex-A9 + FPGA). 
+This repository contains the implementation of a hardware-accelerated image processing system for the **Xilinx Zynq-7000** architecture (ARM Cortex-A9 + FPGA).
 
 The application executes the **Sobel Edge Detection Filter** as a streaming hardware accelerator in the Programmable Logic (PL), communicating with the Processing System (PS) DDR memory through **AXI DMA** using **AXI4-Lite**, **AXI4-Full**, and **AXI4-Stream** interfaces. The project also includes support for displaying the processed image in real time through an **HDMI** output.
 
 ---
 
-## Directory Structure
+## Index
+
+- [Implementation Guide](#implementation-guide)
+- [Development Tools](#development-tools)
+- [Reference Documentation (AMD/Xilinx)](#reference-documentation-amdxilinx)
+- [Repository Structure](#repository-structure)
+- [Project Recommendations](#project-recommendations)
+- [License](#license)
+- [Additional Notes](#additional-notes)
+
+---
+
+## Implementation Guide
+
+The implementation is divided into two documents. Reading them in order is recommended.
+
+| Part | Document | Main Topics |
+|:---:|----------|-------------|
+| 1 | [tutorial_sobel_filter_p1.md](docs/tutorial_sobel_filter_p1.md) | Vitis HLS, Sobel IP, AXI4-Stream, AXI DMA, Vivado, Vitis |
+| 2 | [tutorial_sobel_filter_p2.md](docs/tutorial_sobel_filter_p2.md) | AXI VDMA, Video Timing Controller (VTC), HDMI Output |
+
+---
+
+## Development Tools
+
+The following tools are used throughout the project.
+
+| Tool | Version | Description |
+|------|:-------:|-------------|
+| Vivado | 2025.2.1 | FPGA hardware design, synthesis, implementation, and bitstream generation. |
+| Vitis | 2025.2.1 | Bare-metal software development for the ARM Cortex-A9 Processing System. |
+| Python | 3.12.3 | For tools and automation. |
+| Board | PYNQ-Z2 | Real implementation. |
+
+---
+
+## Reference Documentation (AMD/Xilinx)
+
+The following official AMD/Xilinx documentation is recommended throughout the implementation.
+
+> Search using the document code — e.g., `"PG021 site:docs.amd.com"`.
+
+| Document | Title | Main Topics |
+|----------|-------|-------------|
+| PG021 | AXI DMA Product Guide | AXI DMA architecture, register map, Simple Mode vs Scatter-Gather, buffer descriptors and transfer control. |
+| UG585 | Zynq-7000 Technical Reference Manual | Processing System architecture, GP/HP AXI ports, DDR controller, GIC, clocks and interconnect. |
+| UG1399 | Vitis HLS User Guide | C/C++ coding style, HLS pragmas (`INTERFACE`, `PIPELINE`, `ARRAY_PARTITION`), optimization techniques and `hls::stream`. |
+| UG994 | Vivado Design Suite User Guide: Designing IP Subsystems | IP Integrator, Address Editor, Block Design creation and TCL export. |
+| UG908 | Vivado Design Suite User Guide: Programming and Debugging | FPGA programming, debugging and Integrated Logic Analyzer (ILA). |
+
+**How to use these documents without getting overwhelmed:**
+
+Together, these manuals span thousands of pages, and no one is expected to read them cover to cover. The recommended approach is: follow the tutorial → if something is unclear or breaks, open the relevant document and jump directly to the appropriate section.
+
+There are two exceptions that are well worth reading from beginning to end: the **introductory chapter of the AXI specification UG1037** (about 30 pages, which consolidates the concepts covered in Part 1 of this tutorial) and **UG934** (about 20 pages).
+
+---
+
+## Repository Structure
 
 The project follows a modular organization that separates version-controlled source code from automatically generated project files.
+
+<details>
+<summary>View full repository tree</summary>
 
 ```text
 Sobel_Filter_Zynq7000/
@@ -59,52 +120,7 @@ Sobel_Filter_Zynq7000/
 └── README.md
 ```
 
----
-
-## Implementation Guide
-
-The implementation is divided into two documents. Reading them in order is recommended.
-
-| Part | Document | Main Topics |
-|:---:|----------|-------------|
-| 1 | [tutorial_sobel_filter_p1.md](docs/tutorial_sobel_filter_p1.md) | Vitis HLS, Sobel IP, AXI4-Stream, AXI DMA, Vivado, Vitis |
-| 2 | [tutorial_sobel_filter_p2.md](docs/tutorial_sobel_filter_p2.md) | AXI VDMA, Video Timing Controller (VTC), HDMI Output |
-
----
-
-## Development Tools
-
-The following tools are used throughout the project.
-
-| Tool | Version | Description |
-|------|:-------:|-------------|
-| Vivado | 2025.2.1 | FPGA hardware design, synthesis, implementation, and bitstream generation. |
-| Vitis | 2025.2.1 | Bare-metal software development for the ARM Cortex-A9 Processing System. |
-| Python | 3.12.3 | For tools and automation. |
-| Board | PYNQ-Z2 | Real implementation. |
-
----
-
-## Reference Documentation (AMD/Xilinx)
-
-The following official AMD/Xilinx documentation is recommended throughout the implementation.
-
-> Search using the document code — e.g., `"PG021 site:docs.amd.com"`.
-
-
-| Document | Title | Main Topics |
-|----------|-------|-------------|
-| PG021 | AXI DMA Product Guide | AXI DMA architecture, register map, Simple Mode vs Scatter-Gather, buffer descriptors and transfer control. |
-| UG585 | Zynq-7000 Technical Reference Manual | Processing System architecture, GP/HP AXI ports, DDR controller, GIC, clocks and interconnect. |
-| UG1399 | Vitis HLS User Guide | C/C++ coding style, HLS pragmas (`INTERFACE`, `PIPELINE`, `ARRAY_PARTITION`), optimization techniques and `hls::stream`. |
-| UG994 | Vivado Design Suite User Guide: Designing IP Subsystems | IP Integrator, Address Editor, Block Design creation and TCL export. |
-| UG908 | Vivado Design Suite User Guide: Programming and Debugging | FPGA programming, debugging and Integrated Logic Analyzer (ILA). |
-
-**How to use these documents without getting overwhelmed:** 
-
-Together, these manuals span thousands of pages, and no one is expected to read them cover to cover. The recommended approach is: follow the tutorial → if something is unclear or breaks, open the relevant document and jump directly to the appropriate section. 
-
-There are two exceptions that are well worth reading from beginning to end: the **introductory chapter of the AXI specification UG1037** (about 30 pages, which consolidates the concepts covered in Part 1 of this tutorial) and **UG934** (about 20 pages).
+</details>
 
 ---
 
@@ -116,8 +132,8 @@ Do **not** commit generated project files.
 
 Keep the repository lightweight by versioning only:
 
-- Source code (C/C++)
-- RTL source files (Verilog/VHDL)
+- Source code (C)
+- RTL source files (Verilog)
 - Constraint files (`.xdc`)
 - Hardware platform files (`.xsa`) when required
 - Block Design TCL scripts (`File → Export → Export Block Design`)
@@ -139,4 +155,4 @@ This repository is intended as practical educational material for learning FPGA-
 
 ---
 
-↑ [Back to top](#top)
+[↑ Back to top](#top)

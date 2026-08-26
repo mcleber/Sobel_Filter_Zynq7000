@@ -1,10 +1,33 @@
+<a id="top"></a>
+
 # Adendo ao Tutorial Sobel: Exibindo Antes/Depois via HDMI HDMI output using AXI VDMA
+
+[← Back to Readme](../README.md)
 
 **Objetivo:** substituir o gerador de colorbar por um **framebuffer na DDR**, exibindo no monitor HDMI a imagem original (metade esquerda) e a filtrada pelo Sobel (metade direita), lado a lado, em 1024×600.
 
 **O que você vai aprender de novo:** o IP **AXI VDMA** (Video DMA) — o irmão do AXI DMA especializado em vídeo — e como integrar **RTL Verilog seu** (o transmissor HDMI) dentro de um block design.
 
 ---
+
+## Table of Contents
+
+- [A.0 — Architecture: what changes compared to Tutorial 1](#a0--architecture-what-changes-in-relation-to-tutorial-1)
+- [A.1 — New concept: AXI VDMA vs AXI DMA](#a1--new-concept-axi-vdma-vs-axi-dma)
+- [A.2 — Preparing your RTL to enter the Block Design](#a2--preparing-your-rtl-to-enter-the-block-design)
+- [A.3 — New IPs in the Block Design](#a3--new-ips-in-the-block-design)
+  - [A.3.1 Clocking Wizard](#a31-clocking-wizard)
+  - [A.3.2 Zynq PS](#a32-zynq-ps)
+  - [A.3.3 AXI VDMA](#a33-axi-vdma-duplo-clique)
+  - [A.3.4 Video Timing Controller](#a34-video-timing-controller-duplo-clique)
+  - [A.3.5 AXI4-Stream to Video Out](#a35-axi4-stream-to-video-out-duplo-clique)
+  - [A.3.6 Subset Converter](#a36-subset-converter)
+- [A.4 — Connections](#a4--connections-the-part-that-requires-attention)
+- [A.5 — Constraints (XDC)](#a5--constraints-xdc)
+- [A.6 — Vitis Code: composing the framebuffer and connecting the VDMA](#a6--vitis-code-composing-the-framebuffer-and-connecting-the-vdma)
+- [A.7 — Video-specific Troubleshooting](#a7--video-specific-troubleshooting)
+- [A.8 — Closing the Loop](#a8--closing-the-loop)
+
 
 ## A.0 — Arquitetura: o que muda em relação ao Tutorial 1
 
@@ -331,3 +354,11 @@ Olha que elegante o que você construiu: os **três AXIs do tutorial original** 
 1. **Double buffering**: 2 frame buffers no VDMA + `XAxiVdma_StartParking` para trocar de frame sem tearing.
 2. Processar a imagem **continuamente** (loop: DMA → Sobel → compõe → tela) e ver a latência na prática.
 3. Trocar a imagem de teste por uma foto real carregada via SD card (xilffs) — aí o antes/depois no monitor fica impressionante de verdade.
+
+---
+
+[↑ Back to top](#top)
+
+[← Back to Readme](../README.md)
+
+[← Part 1 — Sobel Edge Detection Filter](tutorial_sobel_filter_p1.md)

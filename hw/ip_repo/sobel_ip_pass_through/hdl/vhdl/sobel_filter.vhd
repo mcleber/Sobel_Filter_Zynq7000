@@ -41,6 +41,7 @@ architecture behav of sobel_filter is
     constant ap_const_boolean_0 : BOOLEAN := false;
     constant ap_const_lv1_1 : STD_LOGIC_VECTOR (0 downto 0) := "1";
     constant ap_const_lv18_0 : STD_LOGIC_VECTOR (17 downto 0) := "000000000000000000";
+    constant ap_const_lv8_FF : STD_LOGIC_VECTOR (7 downto 0) := "11111111";
     constant ap_const_lv18_1 : STD_LOGIC_VECTOR (17 downto 0) := "000000000000000001";
     constant ap_const_lv18_3FFFF : STD_LOGIC_VECTOR (17 downto 0) := "111111111111111111";
 
@@ -56,15 +57,15 @@ architecture behav of sobel_filter is
     signal ap_enable_reg_pp0_iter1 : STD_LOGIC := '0';
     signal ap_loop_exit_ready_pp0_iter1_reg : STD_LOGIC;
     signal ap_block_pp0_stage0_subdone : BOOLEAN;
-    signal icmp_ln23_fu_132_p2 : STD_LOGIC_VECTOR (0 downto 0);
+    signal icmp_ln23_fu_130_p2 : STD_LOGIC_VECTOR (0 downto 0);
     signal ap_condition_exit_pp0_iter0_stage0 : STD_LOGIC;
     signal ap_ready_int : STD_LOGIC;
     signal in_stream_TDATA_blk_n : STD_LOGIC;
     signal ap_block_pp0_stage0 : BOOLEAN;
     signal out_stream_TDATA_blk_n : STD_LOGIC;
     signal ap_block_pp0_stage0_11001 : BOOLEAN;
-    signal indvar_flatten2_fu_66 : STD_LOGIC_VECTOR (17 downto 0) := "000000000000000000";
-    signal add_ln23_fu_126_p2 : STD_LOGIC_VECTOR (17 downto 0);
+    signal indvar_flatten2_fu_68 : STD_LOGIC_VECTOR (17 downto 0) := "000000000000000000";
+    signal add_ln23_fu_124_p2 : STD_LOGIC_VECTOR (17 downto 0);
     signal ap_loop_init : STD_LOGIC;
     signal ap_sig_allocacmp_indvar_flatten2_load : STD_LOGIC_VECTOR (17 downto 0);
     signal ap_block_pp0_stage0_01001 : BOOLEAN;
@@ -218,7 +219,7 @@ begin
     port map (
         ap_clk => ap_clk,
         ap_rst => ap_rst_n_inv,
-        data_in => in_stream_TDATA_int_regslice,
+        data_in => ap_const_lv8_FF,
         vld_in => out_stream_TVALID_int_regslice,
         ack_in => out_stream_TREADY_int_regslice,
         data_out => out_stream_TDATA,
@@ -298,11 +299,11 @@ begin
     end process;
 
 
-    indvar_flatten2_fu_66_assign_proc : process (ap_clk)
+    indvar_flatten2_fu_68_assign_proc : process (ap_clk)
     begin
         if (ap_clk'event and ap_clk = '1') then
             if (((ap_const_boolean_0 = ap_block_pp0_stage0_11001) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage0))) then
-                indvar_flatten2_fu_66 <= add_ln23_fu_126_p2;
+                indvar_flatten2_fu_68 <= add_ln23_fu_124_p2;
             end if;
         end if;
     end process;
@@ -316,7 +317,7 @@ begin
                 ap_NS_fsm <= "X";
         end case;
     end process;
-    add_ln23_fu_126_p2 <= std_logic_vector(unsigned(ap_sig_allocacmp_indvar_flatten2_load) + unsigned(ap_const_lv18_1));
+    add_ln23_fu_124_p2 <= std_logic_vector(unsigned(ap_sig_allocacmp_indvar_flatten2_load) + unsigned(ap_const_lv18_1));
     ap_CS_fsm_pp0_stage0 <= ap_CS_fsm(0);
         ap_block_pp0_stage0 <= not((ap_const_boolean_1 = ap_const_boolean_1));
 
@@ -350,9 +351,9 @@ begin
     end process;
 
 
-    ap_condition_exit_pp0_iter0_stage0_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_block_pp0_stage0_subdone, icmp_ln23_fu_132_p2)
+    ap_condition_exit_pp0_iter0_stage0_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_block_pp0_stage0_subdone, icmp_ln23_fu_130_p2)
     begin
-        if (((icmp_ln23_fu_132_p2 = ap_const_lv1_1) and (ap_const_boolean_0 = ap_block_pp0_stage0_subdone) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage0))) then 
+        if (((icmp_ln23_fu_130_p2 = ap_const_lv1_1) and (ap_const_boolean_0 = ap_block_pp0_stage0_subdone) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage0))) then 
             ap_condition_exit_pp0_iter0_stage0 <= ap_const_logic_1;
         else 
             ap_condition_exit_pp0_iter0_stage0 <= ap_const_logic_0;
@@ -379,16 +380,16 @@ begin
     end process;
 
 
-    ap_sig_allocacmp_indvar_flatten2_load_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_block_pp0_stage0, indvar_flatten2_fu_66, ap_loop_init)
+    ap_sig_allocacmp_indvar_flatten2_load_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_block_pp0_stage0, indvar_flatten2_fu_68, ap_loop_init)
     begin
         if (((ap_loop_init = ap_const_logic_1) and (ap_const_boolean_0 = ap_block_pp0_stage0) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage0))) then 
             ap_sig_allocacmp_indvar_flatten2_load <= ap_const_lv18_0;
         else 
-            ap_sig_allocacmp_indvar_flatten2_load <= indvar_flatten2_fu_66;
+            ap_sig_allocacmp_indvar_flatten2_load <= indvar_flatten2_fu_68;
         end if; 
     end process;
 
-    icmp_ln23_fu_132_p2 <= "1" when (ap_sig_allocacmp_indvar_flatten2_load = ap_const_lv18_3FFFF) else "0";
+    icmp_ln23_fu_130_p2 <= "1" when (ap_sig_allocacmp_indvar_flatten2_load = ap_const_lv18_3FFFF) else "0";
 
     in_stream_TDATA_blk_n_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_block_pp0_stage0, in_stream_TVALID_int_regslice)
     begin
