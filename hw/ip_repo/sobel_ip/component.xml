@@ -746,8 +746,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Sobel Filter</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2114729563</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2026-08-06T17:43:35Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2114759496</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2026-08-27T12:36:40Z</xilinx:coreCreationDateTime>
       <xilinx:sdxKernelAttributes>
         <xilinx:sdx_kernel>true</xilinx:sdx_kernel>
         <xilinx:sdx_kernel_type>hls</xilinx:sdx_kernel_type>
