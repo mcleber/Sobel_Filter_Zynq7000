@@ -102,7 +102,9 @@ The **Sobel filter** is an edge-detection operator based on this same convolutio
 Convolving the image `A` with each kernel gives two gradient components:
 
 $$
-G_x = K_x * A \qquad\qquad G_y = K_y * A
+G_x = K_x * A
+\qquad
+G_y = K_y * A
 $$
 
 From these, the **gradient magnitude** and **direction** at each pixel are computed as:
@@ -125,11 +127,11 @@ For a `512 × 512` **8-bit grayscale** image (1 byte per pixel):
 
 
 $$
-1 \, line \, = \, 512 \, pixels \, × \, 1 \, byte/pixel \, = \, 512 \, bytes
+1\ \text{line} = 512\ \text{pixels} \times 1\ \text{byte/pixel} = 512\ \text{bytes}
 $$
 
 $$
-3 \, lines \, = \, 3 \, × \, 512 \, bytes \, = \, 1536 \, bytes \, = \, 1.5 \, KB \,  (Sobel \, window)
+3\ \text{lines} = 3 \times 512\ \text{bytes} = 1536\ \text{bytes} = 1.5\ \text{KB}
 $$
 
 
