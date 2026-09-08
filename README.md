@@ -108,8 +108,11 @@ $$
 From these, the **gradient magnitude** and **direction** at each pixel are computed as:
 
 $$
-|G| = \sqrt{G_x^{2} + G_y^{2}} \;\;\; \text{(commonly approximated as } |G_x| + |G_y| \text{ in hardware)}
+|G| = \sqrt{G_x^2 + G_y^2}
 $$
+
+(commonly approximated as |Gx| + |Gy| in hardware).
+
 
 `|G|` is large where the image intensity changes sharply, which happens at object boundaries and is exactly what makes Sobel useful for edge detection. In this project `Gx` and `Gy` are computed in Vitis HLS, and the square-root is replaced by the cheaper absolute-value sum to keep the design lightweight and easy to pipeline.
 
@@ -120,13 +123,14 @@ Because the 3×3 Sobel window needs pixels from the row above, the current row, 
 
 For a `512 × 512` **8-bit grayscale** image (1 byte per pixel):
 
-$$
-\text{1 line} = 512 \; \text{pixels} \times 1\; \text{byte/pixel} = 512 \; \text{bytes}
-$$
 
 $$
-\text{3 lines (Sobel window)} = 3 \times 512 = 1536\; \text{bytes} = 1.5 \; \text{KB}
+1 line  = 512 \ pixels × 1 \ byte/pixel = 512 \ bytes
 $$
+
+3 lines = 3 × 512 bytes = 1536 bytes = 1.5 KB   (Sobel window)
+
+
 
 | Quantity   | Calculation   | Memory                 |
 | ---------- | ------------- | ---------------------- |
