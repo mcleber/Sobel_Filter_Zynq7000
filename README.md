@@ -125,11 +125,12 @@ For a `512 × 512` **8-bit grayscale** image (1 byte per pixel):
 
 
 $$
-1 line  = 512 \ pixels × 1 \ byte/pixel = 512 \ bytes
+1 \, line \, = \, 512 \, pixels \, × \, 1 \, byte/pixel \, = \, 512 \, bytes
 $$
 
-3 lines = 3 × 512 bytes = 1536 bytes = 1.5 KB   (Sobel window)
-
+$$
+3 \, lines \, = \, 3 \, × \, 512 \, bytes \, = \, 1536 \, bytes \, = \, 1.5 \, KB \,  (Sobel \, window)
+$$
 
 
 | Quantity   | Calculation   | Memory                 |
