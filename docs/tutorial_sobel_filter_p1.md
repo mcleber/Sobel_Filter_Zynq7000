@@ -718,4 +718,3 @@ With the ILA, you can observe signals such as `TVALID`, `TREADY`, and `TLAST` in
 
 [← Back to Readme](../README.md)
 
-[→ Part 2 — HDMI output using AXI VDMA](tutorial_sobel_filter_p2.md)
