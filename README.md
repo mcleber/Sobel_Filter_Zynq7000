@@ -221,7 +221,7 @@ Sobel_Filter_Zynq7000/
 │   └── proj/                  # Generated project files (discard)
 │
 ├── hw/                        # Vivado
-│   ├── hdl/                   # Custom RTL (Verilog/VHDL)
+│   ├── hdl/                   # Custom RTL (Verilog)
 │   ├── xdc/                   # Constraint files
 │   ├── ip_repo/               # Exported HLS IPs
 │   ├── bd/                    # Block Design TCL scripts
@@ -232,7 +232,7 @@ Sobel_Filter_Zynq7000/
 │   ├── xsa/                   # Exported hardware platforms
 │   └── workspace/             # Generated workspace (discard)
 |
-├── tools/                     # Python script to convert .pgm images into C arrays
+├── tools/                     # Python (convert pgm to C array) and Octave (blur filter)
 │
 ├── images/                    # Test images and output results
 │
