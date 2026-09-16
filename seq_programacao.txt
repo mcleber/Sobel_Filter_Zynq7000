@@ -1,3 +1,6 @@
+Sequencia de codigos gerados
+-----------------------------
+
 Line Buffer;
 
 MAC (Kernel);
