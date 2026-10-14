@@ -5,3 +5,15 @@ Line Buffer;
 
 MAC (Kernel);
 
+imageControl;
+
+top level;
+
+simulacao;
+
+criar novo projeto e importar o ip_repo criado anteriormente e gerar o bitstream;
+
+gerar o imageData.h no projeto imageProcessing testbench;
+
+sobel.
+

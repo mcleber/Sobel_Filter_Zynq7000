@@ -55,4 +55,16 @@ Makefile        text eol=lf
 # ===============================
 
 *.png           binary
+*.jpg           binary
+*.pgm           binary
+
+# ===============================
+# Vivado / Vitis
+# ===============================
+
+*.tcl           text eol=lf
+*.xml           text eol=lf
+*.xci           text eol=lf
+*.xsa           binary
+*.bit           binary
 
